@@ -1,2 +1,2 @@
 # test
-aimanhazim.com/test
+https://a-haz.github.io/test/
