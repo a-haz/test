@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Percentage Calculator — % of a Number, Percent Change &amp; More</title>
+  <meta name="description" content="Free percentage calculator: find X% of a number, work out what percent X is of Y, and calculate percentage increase or decrease. Instant results, no sign-up.">
+  <link rel="canonical" href="https://a-haz.github.io/test/percentage-calculator/">
+  <meta property="og:title" content="Percentage Calculator — Fast &amp; Free">
+  <meta property="og:description" content="X% of Y, X as a percent of Y, and percent change — solved instantly in your browser.">
+  <meta property="og:url" content="https://a-haz.github.io/test/percentage-calculator/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .calc { margin-bottom: 18px; }
+    .calc .sentence { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 1.05rem; }
+    .calc input { width: 110px; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Percentage Calculator</h1>
+    <p class="tagline">Three calculators for the three questions people actually ask. Results update as you type.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel calc">
+      <h2 style="font-size:1.1rem; margin-top:0;">What is X% of Y?</h2>
+      <div class="sentence">
+        What is <input type="number" id="a1" step="any" placeholder="15"> % of
+        <input type="number" id="a2" step="any" placeholder="200"> ?
+      </div>
+      <div class="result-box" id="r1">—</div>
+    </div>
+
+    <div class="tool-panel calc">
+      <h2 style="font-size:1.1rem; margin-top:0;">X is what percent of Y?</h2>
+      <div class="sentence">
+        <input type="number" id="b1" step="any" placeholder="30"> is what % of
+        <input type="number" id="b2" step="any" placeholder="200"> ?
+      </div>
+      <div class="result-box" id="r2">—</div>
+    </div>
+
+    <div class="tool-panel calc">
+      <h2 style="font-size:1.1rem; margin-top:0;">Percentage increase / decrease</h2>
+      <div class="sentence">
+        From <input type="number" id="c1" step="any" placeholder="50"> to
+        <input type="number" id="c2" step="any" placeholder="65"> is what % change?
+      </div>
+      <div class="result-box" id="r3">—</div>
+    </div>
+
+    <div class="content-section">
+      <h2>The formulas</h2>
+      <ul>
+        <li><strong>X% of Y</strong> = Y × X ÷ 100. <em>Example: 15% of 200 = 200 × 0.15 = 30.</em></li>
+        <li><strong>X as a percent of Y</strong> = X ÷ Y × 100. <em>Example: 30 of 200 = 15%.</em></li>
+        <li><strong>Percent change from A to B</strong> = (B − A) ÷ A × 100. <em>Example: 50 → 65 = +30%.</em></li>
+      </ul>
+
+      <h2>FAQ</h2>
+      <h3>How do I quickly calculate a tip?</h3>
+      <p>Use the first calculator: enter the tip rate (e.g. 18) and the bill amount. Mental shortcut: 10% is just moving the decimal point one place left; 20% is that doubled; 15% is 10% plus half of it again.</p>
+      <h3>What's the difference between percentage change and percentage points?</h3>
+      <p>If an interest rate rises from 4% to 5%, that's an increase of 1 <em>percentage point</em>, but a 25% <em>percentage change</em> (since 1 is a quarter of 4). News reports often blur this distinction.</p>
+      <h3>Why does a 50% drop need a 100% gain to recover?</h3>
+      <p>Because the base changes. Drop 100 → 50 is −50%, but recovering 50 → 100 means doubling, i.e. +100%. Percent changes are always relative to the starting value.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../invoice-generator/">🧾 Invoice Generator</a>
+        <a href="../word-counter/">📝 Word Counter</a>
+        <a href="../json-formatter/">🪄 JSON Formatter</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  function val(id) {
+    var v = document.getElementById(id).value;
+    return v === '' ? null : parseFloat(v);
+  }
+
+  function fmt(n) {
+    return parseFloat(n.toFixed(6)).toLocaleString(undefined, { maximumFractionDigits: 6 });
+  }
+
+  function update() {
+    var a1 = val('a1'), a2 = val('a2');
+    document.getElementById('r1').innerHTML =
+      (a1 !== null && a2 !== null)
+        ? a1 + '% of ' + fmt(a2) + ' = <strong>' + fmt(a2 * a1 / 100) + '</strong>'
+        : '—';
+
+    var b1 = val('b1'), b2 = val('b2');
+    document.getElementById('r2').innerHTML =
+      (b1 !== null && b2 !== null && b2 !== 0)
+        ? fmt(b1) + ' is <strong>' + fmt(b1 / b2 * 100) + '%</strong> of ' + fmt(b2)
+        : '—';
+
+    var c1 = val('c1'), c2 = val('c2');
+    if (c1 !== null && c2 !== null && c1 !== 0) {
+      var ch = (c2 - c1) / Math.abs(c1) * 100;
+      var dir = ch > 0 ? 'increase' : ch < 0 ? 'decrease' : 'change';
+      document.getElementById('r3').innerHTML =
+        fmt(c1) + ' → ' + fmt(c2) + ' = <strong>' + (ch > 0 ? '+' : '') + fmt(ch) + '%</strong> ' + dir;
+    } else {
+      document.getElementById('r3').textContent = '—';
+    }
+  }
+
+  ['a1', 'a2', 'b1', 'b2', 'c1', 'c2'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', update);
+  });
+})();
+</script>
+
+</body>
+</html>
