@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Base64 Encode / Decode Online — UTF-8 Safe, In Your Browser</title>
+  <meta name="description" content="Free Base64 encoder and decoder with full UTF-8 support and URL-safe mode. Convert text to Base64 and back instantly — nothing is sent to any server.">
+  <link rel="canonical" href="https://a-haz.github.io/test/base64/">
+  <meta property="og:title" content="Base64 Encode / Decode — Free &amp; Private">
+  <meta property="og:description" content="UTF-8 safe Base64 conversion with URL-safe mode, entirely in your browser.">
+  <meta property="og:url" content="https://a-haz.github.io/test/base64/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Base64 Encode / Decode</h1>
+    <p class="tagline">Convert text to Base64 and back, with full UTF-8 support (emoji included 🎉) and an optional URL-safe alphabet. All conversion happens locally.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <label for="plain"><strong>Plain text</strong></label>
+      <textarea class="io" id="plain" spellcheck="false" style="min-height:140px;" placeholder="Hello, world!"></textarea>
+
+      <div class="controls">
+        <button class="btn" id="encodeBtn">↓ Encode</button>
+        <button class="btn" id="decodeBtn">↑ Decode</button>
+        <label class="checkbox-row"><input type="checkbox" id="urlSafe"> URL-safe (<code>-_</code> instead of <code>+/</code>, no padding)</label>
+        <button class="btn btn-secondary" id="copyBtn">Copy Base64</button>
+        <button class="btn btn-secondary" id="clearBtn">Clear</button>
+      </div>
+      <p class="status" id="status"></p>
+
+      <label for="b64"><strong>Base64</strong></label>
+      <textarea class="io" id="b64" spellcheck="false" style="min-height:140px;" placeholder="SGVsbG8sIHdvcmxkIQ=="></textarea>
+    </div>
+
+    <div class="content-section">
+      <h2>FAQ</h2>
+      <h3>What is Base64?</h3>
+      <p>Base64 is an encoding that represents binary data using 64 printable characters (A–Z, a–z, 0–9, + and /). It's used wherever binary data has to travel through text-only channels: email attachments, data URLs, JSON payloads, basic HTTP auth headers, JWT tokens and more.</p>
+      <h3>Is Base64 encryption?</h3>
+      <p><strong>No.</strong> Base64 is encoding, not encryption — anyone can decode it instantly (this page proves it). Never use Base64 to "hide" secrets. If you need confidentiality, use real encryption.</p>
+      <h3>What is URL-safe Base64?</h3>
+      <p>Standard Base64 uses <code>+</code> and <code>/</code>, which have special meanings in URLs. The URL-safe variant (RFC 4648 §5) substitutes <code>-</code> and <code>_</code> and usually drops the <code>=</code> padding, so the result can be put directly in a URL or filename. JWTs use this variant.</p>
+      <h3>Why does my decode fail?</h3>
+      <p>Usually stray whitespace or line breaks inside the string, a truncated string, or mixing the standard and URL-safe alphabets. This tool strips whitespace automatically and accepts both alphabets when decoding.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../json-formatter/">🪄 JSON Formatter</a>
+        <a href="../password-generator/">🔐 Password Generator</a>
+        <a href="../word-counter/">📝 Word Counter</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var plain = document.getElementById('plain');
+  var b64 = document.getElementById('b64');
+  var status = document.getElementById('status');
+
+  function setStatus(msg, ok) {
+    status.textContent = msg;
+    status.className = 'status ' + (ok ? 'ok' : 'err');
+  }
+
+  function encode(str, urlSafe) {
+    var bytes = new TextEncoder().encode(str);
+    var bin = '';
+    for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    var out = btoa(bin);
+    if (urlSafe) out = out.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    return out;
+  }
+
+  function decode(str) {
+    // accept both alphabets, ignore whitespace, restore padding
+    var s = str.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
+    while (s.length % 4) s += '=';
+    var bin = atob(s);
+    var bytes = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder('utf-8', { fatal: true }).decode(bytes);
+  }
+
+  document.getElementById('encodeBtn').addEventListener('click', function () {
+    b64.value = encode(plain.value, document.getElementById('urlSafe').checked);
+    setStatus('Encoded ✓ (' + b64.value.length.toLocaleString() + ' chars)', true);
+  });
+
+  document.getElementById('decodeBtn').addEventListener('click', function () {
+    try {
+      plain.value = decode(b64.value);
+      setStatus('Decoded ✓', true);
+    } catch (e) {
+      setStatus('✗ Not valid Base64 (or not valid UTF-8 text after decoding).', false);
+    }
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    if (!b64.value) return;
+    navigator.clipboard.writeText(b64.value).then(function () {
+      setStatus('Copied to clipboard ✓', true);
+    });
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', function () {
+    plain.value = '';
+    b64.value = '';
+    status.textContent = '';
+  });
+})();
+</script>
+
+</body>
+</html>

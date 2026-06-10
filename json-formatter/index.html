@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Formatter &amp; Validator — Pretty-Print and Minify JSON Online</title>
+  <meta name="description" content="Free online JSON formatter, validator and minifier. Pretty-print JSON with 2 or 4 spaces, find syntax errors with exact line and column, all locally in your browser.">
+  <link rel="canonical" href="https://a-haz.github.io/test/json-formatter/">
+  <meta property="og:title" content="JSON Formatter &amp; Validator — Free, Private, In-Browser">
+  <meta property="og:description" content="Pretty-print, minify and validate JSON with exact error locations. Your JSON never leaves your device.">
+  <meta property="og:url" content="https://a-haz.github.io/test/json-formatter/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>JSON Formatter &amp; Validator</h1>
+    <p class="tagline">Paste JSON below to pretty-print, minify or validate it. Errors are reported with the exact line and column. Everything runs in your browser — your data is never uploaded.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <textarea class="io" id="input" spellcheck="false" placeholder='{"paste":"your JSON here"}'></textarea>
+      <div class="controls">
+        <button class="btn" id="formatBtn">Format</button>
+        <button class="btn btn-secondary" id="minifyBtn">Minify</button>
+        <button class="btn btn-secondary" id="validateBtn">Validate</button>
+        <label>Indent
+          <select id="indent">
+            <option value="2">2 spaces</option>
+            <option value="4">4 spaces</option>
+            <option value="tab">Tab</option>
+          </select>
+        </label>
+        <button class="btn btn-secondary" id="copyBtn">Copy result</button>
+        <button class="btn btn-secondary" id="clearBtn">Clear</button>
+        <button class="btn btn-secondary" id="sampleBtn">Sample</button>
+      </div>
+      <p class="status" id="status"></p>
+      <textarea class="io" id="output" spellcheck="false" readonly placeholder="Result appears here…"></textarea>
+    </div>
+
+    <div class="content-section">
+      <h2>FAQ</h2>
+      <h3>Is it safe to paste sensitive JSON here?</h3>
+      <p>Yes. This page is a static file with no backend — parsing and formatting happen entirely in your browser using the built-in <code>JSON.parse</code> and <code>JSON.stringify</code>. Nothing is transmitted anywhere. You can even load the page, disconnect from the internet, and it still works.</p>
+      <h3>Why is my JSON invalid?</h3>
+      <p>The most common causes: trailing commas after the last item, single quotes instead of double quotes, unquoted property names, and comments (standard JSON doesn't allow them). The validator above points you at the exact line and column of the first problem.</p>
+      <h3>What's the difference between Format and Minify?</h3>
+      <p><strong>Format</strong> pretty-prints the JSON with indentation and newlines so humans can read it. <strong>Minify</strong> strips all unnecessary whitespace to make the payload as small as possible for transmission or storage. Both validate the JSON first.</p>
+      <h3>Is there a size limit?</h3>
+      <p>Only your browser's memory. Documents in the tens of megabytes format fine on a typical machine.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../base64/">🔁 Base64 Encode/Decode</a>
+        <a href="../word-counter/">📝 Word Counter</a>
+        <a href="../password-generator/">🔐 Password Generator</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var input = document.getElementById('input');
+  var output = document.getElementById('output');
+  var status = document.getElementById('status');
+
+  function lineCol(text, pos) {
+    var before = text.slice(0, pos).split('\n');
+    return { line: before.length, col: before[before.length - 1].length + 1 };
+  }
+
+  function parseOrReport() {
+    var text = input.value;
+    if (!text.trim()) {
+      setStatus('Paste some JSON first.', false);
+      return null;
+    }
+    try {
+      return { data: JSON.parse(text) };
+    } catch (e) {
+      var msg = e.message;
+      var m = msg.match(/position (\d+)/);
+      if (m) {
+        var lc = lineCol(text, parseInt(m[1], 10));
+        msg += ' (line ' + lc.line + ', column ' + lc.col + ')';
+      }
+      setStatus('✗ Invalid JSON: ' + msg, false);
+      return null;
+    }
+  }
+
+  function setStatus(msg, ok) {
+    status.textContent = msg;
+    status.className = 'status ' + (ok ? 'ok' : 'err');
+  }
+
+  function indentValue() {
+    var v = document.getElementById('indent').value;
+    return v === 'tab' ? '\t' : parseInt(v, 10);
+  }
+
+  document.getElementById('formatBtn').addEventListener('click', function () {
+    var r = parseOrReport();
+    if (!r) return;
+    output.value = JSON.stringify(r.data, null, indentValue());
+    setStatus('✓ Valid JSON — formatted.', true);
+  });
+
+  document.getElementById('minifyBtn').addEventListener('click', function () {
+    var r = parseOrReport();
+    if (!r) return;
+    output.value = JSON.stringify(r.data);
+    setStatus('✓ Valid JSON — minified (' + output.value.length.toLocaleString() + ' chars).', true);
+  });
+
+  document.getElementById('validateBtn').addEventListener('click', function () {
+    var r = parseOrReport();
+    if (!r) return;
+    setStatus('✓ Valid JSON.', true);
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    if (!output.value) return;
+    navigator.clipboard.writeText(output.value).then(function () {
+      setStatus('Copied to clipboard ✓', true);
+    });
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', function () {
+    input.value = '';
+    output.value = '';
+    status.textContent = '';
+  });
+
+  document.getElementById('sampleBtn').addEventListener('click', function () {
+    input.value = JSON.stringify({
+      name: 'QuickTools',
+      free: true,
+      tools: ['json-formatter', 'invoice-generator', 'password-generator'],
+      stats: { backend: null, trackers: 0 }
+    });
+    setStatus('Sample loaded — try Format.', true);
+  });
+})();
+</script>
+
+</body>
+</html>

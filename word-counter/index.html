@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Counter — Count Words, Characters &amp; Reading Time</title>
+  <meta name="description" content="Free online word counter with live word, character, sentence and paragraph counts plus reading and speaking time estimates. Private — your text never leaves your browser.">
+  <link rel="canonical" href="https://a-haz.github.io/test/word-counter/">
+  <meta property="og:title" content="Word Counter — Words, Characters, Reading Time">
+  <meta property="og:description" content="Live word and character counts with reading-time estimates. Your text stays on your device.">
+  <meta property="og:url" content="https://a-haz.github.io/test/word-counter/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Word Counter</h1>
+    <p class="tagline">Type or paste your text below — counts update live. Nothing you write is sent anywhere.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <textarea class="io" id="input" placeholder="Start typing or paste your text here…" style="min-height:260px;"></textarea>
+      <div class="stat-grid">
+        <div class="stat"><span class="num" id="words">0</span><span class="lbl">Words</span></div>
+        <div class="stat"><span class="num" id="chars">0</span><span class="lbl">Characters</span></div>
+        <div class="stat"><span class="num" id="charsNoSpace">0</span><span class="lbl">Characters (no spaces)</span></div>
+        <div class="stat"><span class="num" id="sentences">0</span><span class="lbl">Sentences</span></div>
+        <div class="stat"><span class="num" id="paragraphs">0</span><span class="lbl">Paragraphs</span></div>
+        <div class="stat"><span class="num" id="readTime">0s</span><span class="lbl">Reading time</span></div>
+        <div class="stat"><span class="num" id="speakTime">0s</span><span class="lbl">Speaking time</span></div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2>Common length targets</h2>
+      <ul>
+        <li><strong>Tweet/X post:</strong> 280 characters</li>
+        <li><strong>Meta description (SEO):</strong> 150–160 characters</li>
+        <li><strong>LinkedIn post:</strong> ~1,300 characters before "see more"</li>
+        <li><strong>College essay:</strong> often 250–650 words</li>
+        <li><strong>Blog post:</strong> 1,000–2,000 words is a common sweet spot</li>
+      </ul>
+
+      <h2>FAQ</h2>
+      <h3>How is reading time calculated?</h3>
+      <p>At an average silent reading speed of 200 words per minute. Speaking time uses 130 words per minute, a comfortable presentation pace — handy for timing speeches and video scripts.</p>
+      <h3>What counts as a word?</h3>
+      <p>Any run of characters separated by whitespace. Hyphenated terms like "state-of-the-art" count as one word, which matches how most word processors count.</p>
+      <h3>Is my text stored anywhere?</h3>
+      <p>No. The counting happens in your browser as you type, and the text is never transmitted or saved. Reload the page and it's gone.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../json-formatter/">🪄 JSON Formatter</a>
+        <a href="../base64/">🔁 Base64 Encode/Decode</a>
+        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var input = document.getElementById('input');
+
+  function fmtTime(seconds) {
+    if (seconds < 60) return Math.round(seconds) + 's';
+    var m = Math.floor(seconds / 60);
+    var s = Math.round(seconds % 60);
+    return m + 'm ' + s + 's';
+  }
+
+  function update() {
+    var text = input.value;
+    var trimmed = text.trim();
+    var words = trimmed ? trimmed.split(/\s+/).length : 0;
+    var sentences = trimmed ? (trimmed.match(/[^.!?…]+[.!?…]+(\s|$)|[^.!?…]+$/g) || []).length : 0;
+    var paragraphs = trimmed ? trimmed.split(/\n\s*\n/).filter(function (p) { return p.trim(); }).length : 0;
+
+    document.getElementById('words').textContent = words.toLocaleString();
+    document.getElementById('chars').textContent = text.length.toLocaleString();
+    document.getElementById('charsNoSpace').textContent = text.replace(/\s/g, '').length.toLocaleString();
+    document.getElementById('sentences').textContent = sentences.toLocaleString();
+    document.getElementById('paragraphs').textContent = paragraphs.toLocaleString();
+    document.getElementById('readTime').textContent = fmtTime(words / 200 * 60);
+    document.getElementById('speakTime').textContent = fmtTime(words / 130 * 60);
+  }
+
+  input.addEventListener('input', update);
+  update();
+})();
+</script>
+
+</body>
+</html>
