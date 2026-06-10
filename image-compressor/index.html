@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Compressor &amp; Resizer — Compress JPG, PNG, WebP in Your Browser</title>
+  <meta name="description" content="Compress and resize images without uploading them anywhere — everything happens in your browser. Adjust quality, convert between JPG, PNG and WebP, and download instantly.">
+  <link rel="canonical" href="https://a-haz.github.io/test/image-compressor/">
+  <meta property="og:title" content="Image Compressor &amp; Resizer — 100% Private, In-Browser">
+  <meta property="og:description" content="Compress, resize and convert images locally. Your photos never leave your device.">
+  <meta property="og:url" content="https://a-haz.github.io/test/image-compressor/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .dropzone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 44px 20px;
+      text-align: center;
+      color: var(--muted);
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .dropzone.drag { border-color: var(--accent); background: #eef2ff; }
+    .dropzone strong { color: var(--accent); }
+    .preview-wrap { text-align: center; margin-top: 16px; }
+    .preview-wrap img { max-width: 100%; max-height: 380px; border: 1px solid var(--border); border-radius: 8px; }
+    .compare { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+    .compare .stat { flex: 1; min-width: 150px; }
+    .savings { color: var(--green); font-weight: 700; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Image Compressor &amp; Resizer</h1>
+    <p class="tagline">Shrink photos for email, websites or forms — <strong>without uploading them anywhere</strong>. Unlike most "free" compressors, this runs 100% in your browser, so your images never leave your device.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <div class="dropzone" id="dropzone">
+        <p style="font-size:2rem; margin:0;">🖼️</p>
+        <p><strong>Click to choose an image</strong> or drag &amp; drop it here</p>
+        <p style="font-size:0.85rem;">JPG, PNG, WebP, GIF — processed locally, never uploaded</p>
+      </div>
+      <input type="file" id="fileInput" accept="image/*" style="display:none;">
+
+      <div id="controls" style="display:none;">
+        <div class="field-row">
+          <div class="field">
+            <label for="quality">Quality <strong id="qLabel">80</strong>%</label>
+            <input type="range" id="quality" min="5" max="100" value="80" style="width:180px;">
+          </div>
+          <div class="field">
+            <label for="maxW">Max width (px, blank = keep)</label>
+            <input type="number" id="maxW" min="1" step="1" placeholder="e.g. 1920" style="width:140px;">
+          </div>
+          <div class="field">
+            <label for="format">Output format</label>
+            <select id="format">
+              <option value="image/jpeg" selected>JPEG (photos)</option>
+              <option value="image/webp">WebP (smallest)</option>
+              <option value="image/png">PNG (lossless)</option>
+            </select>
+          </div>
+          <a class="btn" id="downloadBtn" download>⬇ Download</a>
+        </div>
+
+        <div class="compare">
+          <div class="stat"><span class="num" id="origInfo" style="font-size:1.05rem;">—</span><span class="lbl">Original</span></div>
+          <div class="stat"><span class="num" id="newInfo" style="font-size:1.05rem;">—</span><span class="lbl">Compressed</span></div>
+          <div class="stat"><span class="num savings" id="savings" style="font-size:1.05rem;">—</span><span class="lbl">Saved</span></div>
+        </div>
+
+        <div class="preview-wrap"><img id="preview" alt="Compressed image preview"></div>
+      </div>
+      <p class="status err" id="error"></p>
+    </div>
+
+    <div class="content-section">
+      <h2>FAQ</h2>
+      <h3>Are my photos uploaded to a server?</h3>
+      <p>No — that's the whole point of this tool. Compression happens with the HTML5 canvas API inside your browser. You can load this page, go offline, and it still works. Most online compressors upload your image to their servers; this one never does.</p>
+      <h3>Which format should I choose?</h3>
+      <p><strong>JPEG</strong> is the safe default for photos and is accepted everywhere. <strong>WebP</strong> compresses 25–35% smaller at similar quality and works in all modern browsers. <strong>PNG</strong> is lossless and keeps transparency, but produces much larger files for photos — use it for screenshots, logos and graphics with sharp edges.</p>
+      <h3>What quality setting should I use?</h3>
+      <p>70–85% is the sweet spot for photos — big savings with no visible difference at normal viewing sizes. Below 50% you'll start to see compression artifacts. For email attachments or web forms with size limits, also set a max width (1920px covers full-screen viewing; 1200px is plenty for documents).</p>
+      <h3>Does resizing reduce file size more than quality?</h3>
+      <p>Usually yes. Halving the width quarters the pixel count, which typically cuts file size by 60–75% on its own. A 12-megapixel phone photo resized to 1920px wide plus 80% JPEG quality is routinely 10× smaller with no visible loss on screen.</p>
+      <h3>Why does my transparent PNG get a white background?</h3>
+      <p>JPEG doesn't support transparency, so transparent areas are flattened to white when converting. Choose PNG or WebP output to keep transparency.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../qr-code-generator/">📱 QR Code Generator</a>
+        <a href="../base64/">🔁 Base64 Encode/Decode</a>
+        <a href="../invoice-generator/">🧾 Invoice Generator</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var dropzone = document.getElementById('dropzone');
+  var fileInput = document.getElementById('fileInput');
+  var bitmap = null;          // decoded source image (ImageBitmap or HTMLImageElement)
+  var srcW = 0, srcH = 0;
+  var origFile = null;
+  var currentUrl = null;
+  var debounceTimer = null;
+
+  function setError(msg) { document.getElementById('error').textContent = msg || ''; }
+
+  function fmtBytes(b) {
+    if (b < 1024) return b + ' B';
+    if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+    return (b / 1048576).toFixed(2) + ' MB';
+  }
+
+  function loadFile(file) {
+    if (!file || file.type.indexOf('image/') !== 0) {
+      setError('That doesn\'t look like an image file.');
+      return;
+    }
+    setError('');
+    origFile = file;
+    var done = function (img, w, h) {
+      bitmap = img; srcW = w; srcH = h;
+      document.getElementById('controls').style.display = 'block';
+      document.getElementById('origInfo').textContent = fmtBytes(file.size) + ' · ' + w + '×' + h;
+      process();
+    };
+    if (window.createImageBitmap) {
+      createImageBitmap(file, { imageOrientation: 'from-image' })
+        .then(function (bm) { done(bm, bm.width, bm.height); })
+        .catch(function () { loadViaImg(file, done); });
+    } else {
+      loadViaImg(file, done);
+    }
+  }
+
+  function loadViaImg(file, done) {
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function () { done(img, img.naturalWidth, img.naturalHeight); URL.revokeObjectURL(url); };
+    img.onerror = function () { setError('Could not decode this image. HEIC files are not supported by browsers — export as JPG first.'); URL.revokeObjectURL(url); };
+    img.src = url;
+  }
+
+  function process() {
+    if (!bitmap) return;
+    var maxW = parseInt(document.getElementById('maxW').value, 10);
+    var quality = parseInt(document.getElementById('quality').value, 10) / 100;
+    var mime = document.getElementById('format').value;
+
+    var w = srcW, h = srcH;
+    if (maxW > 0 && w > maxW) {
+      h = Math.round(h * maxW / w);
+      w = maxW;
+    }
+
+    var canvas = document.createElement('canvas');
+    canvas.width = w;
+    canvas.height = h;
+    var ctx = canvas.getContext('2d');
+    if (mime === 'image/jpeg') {
+      ctx.fillStyle = '#fff';          // flatten transparency for JPEG
+      ctx.fillRect(0, 0, w, h);
+    }
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(bitmap, 0, 0, w, h);
+
+    canvas.toBlob(function (blob) {
+      if (!blob) { setError('Compression failed for this image/format combination.'); return; }
+      if (currentUrl) URL.revokeObjectURL(currentUrl);
+      currentUrl = URL.createObjectURL(blob);
+
+      document.getElementById('preview').src = currentUrl;
+      document.getElementById('newInfo').textContent = fmtBytes(blob.size) + ' · ' + w + '×' + h;
+      var saved = origFile.size > 0 ? (1 - blob.size / origFile.size) * 100 : 0;
+      document.getElementById('savings').textContent = saved > 0 ? saved.toFixed(0) + '%' : 'larger ⚠';
+
+      var dl = document.getElementById('downloadBtn');
+      var ext = mime === 'image/png' ? 'png' : mime === 'image/webp' ? 'webp' : 'jpg';
+      var base = origFile.name.replace(/\.[^.]+$/, '');
+      dl.href = currentUrl;
+      dl.download = base + '-compressed.' + ext;
+    }, mime, quality);
+  }
+
+  function processDebounced() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(process, 150);
+  }
+
+  dropzone.addEventListener('click', function () { fileInput.click(); });
+  fileInput.addEventListener('change', function () { loadFile(this.files[0]); });
+
+  ['dragover', 'dragenter'].forEach(function (ev) {
+    dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.add('drag'); });
+  });
+  ['dragleave', 'drop'].forEach(function (ev) {
+    dropzone.addEventListener(ev, function (e) { e.preventDefault(); dropzone.classList.remove('drag'); });
+  });
+  dropzone.addEventListener('drop', function (e) {
+    if (e.dataTransfer.files.length) loadFile(e.dataTransfer.files[0]);
+  });
+
+  document.getElementById('quality').addEventListener('input', function () {
+    document.getElementById('qLabel').textContent = this.value;
+    processDebounced();
+  });
+  document.getElementById('maxW').addEventListener('input', processDebounced);
+  document.getElementById('format').addEventListener('change', process);
+})();
+</script>
+
+</body>
+</html>
