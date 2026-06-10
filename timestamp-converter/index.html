@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unix Timestamp Converter — Epoch ⇄ Human-Readable Date</title>
+  <meta name="description" content="Convert Unix timestamps (epoch seconds or milliseconds) to human-readable dates and back. Live current timestamp, local time, UTC and ISO 8601 — all in your browser.">
+  <link rel="canonical" href="https://a-haz.github.io/test/timestamp-converter/">
+  <meta property="og:title" content="Unix Timestamp Converter — Epoch ⇄ Date">
+  <meta property="og:description" content="Epoch to date and date to epoch, with live current timestamp. Free and in-browser.">
+  <meta property="og:url" content="https://a-haz.github.io/test/timestamp-converter/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .now-box { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .now-box code { font-size: 1.6rem; font-weight: 700; color: var(--accent); font-family: ui-monospace, Menlo, Consolas, monospace; }
+    dl.outs { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; margin: 12px 0 0; font-size: 0.97rem; }
+    dl.outs dt { color: var(--muted); text-align: right; }
+    dl.outs dd { margin: 0; font-family: ui-monospace, Menlo, Consolas, monospace; word-break: break-all; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Unix Timestamp Converter</h1>
+    <p class="tagline">Convert epoch timestamps to human-readable dates and back. Seconds or milliseconds are detected automatically.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <div class="now-box">
+        <span>Current Unix time:</span>
+        <code id="now">…</code>
+        <button class="btn btn-secondary" id="copyNow">📋 Copy</button>
+        <span class="status ok" id="copyStatus"></span>
+      </div>
+    </div>
+
+    <div class="tool-panel">
+      <h2 style="font-size:1.1rem; margin-top:0;">Timestamp → Date</h2>
+      <div class="field-row" style="align-items:center;">
+        <input type="text" id="tsIn" inputmode="numeric" placeholder="e.g. 1750000000 or 1750000000000" style="min-width:240px;">
+        <button class="btn btn-secondary" id="nowBtn">Use current time</button>
+      </div>
+      <dl class="outs" id="tsOut" style="display:none;">
+        <dt>Detected as</dt><dd id="oUnit"></dd>
+        <dt>Your local time</dt><dd id="oLocal"></dd>
+        <dt>UTC</dt><dd id="oUtc"></dd>
+        <dt>ISO 8601</dt><dd id="oIso"></dd>
+        <dt>Relative</dt><dd id="oRel"></dd>
+      </dl>
+      <p class="status err" id="tsErr"></p>
+    </div>
+
+    <div class="tool-panel">
+      <h2 style="font-size:1.1rem; margin-top:0;">Date → Timestamp</h2>
+      <div class="field-row" style="align-items:center;">
+        <input type="datetime-local" id="dateIn" step="1">
+        <span style="color:var(--muted); font-size:0.9rem;">(interpreted in your local timezone)</span>
+      </div>
+      <dl class="outs" id="dateOut" style="display:none;">
+        <dt>Unix seconds</dt><dd id="oSec"></dd>
+        <dt>Unix milliseconds</dt><dd id="oMs"></dd>
+        <dt>ISO 8601 (UTC)</dt><dd id="oIso2"></dd>
+      </dl>
+    </div>
+
+    <div class="content-section">
+      <h2>FAQ</h2>
+      <h3>What is Unix time?</h3>
+      <p>The number of seconds elapsed since 00:00:00 UTC on January 1, 1970 (the "epoch"), not counting leap seconds. It's the standard machine representation of time across operating systems, databases and APIs because it's a single unambiguous number with no timezone attached.</p>
+      <h3>Seconds or milliseconds?</h3>
+      <p>Unix time is classically in seconds (10 digits in the current era). JavaScript's <code>Date.now()</code> and many APIs use milliseconds (13 digits). This tool auto-detects: values ≥ 100,000,000,000 are treated as milliseconds.</p>
+      <h3>What is the year 2038 problem?</h3>
+      <p>Systems storing Unix time in a signed 32-bit integer overflow on January 19, 2038 (at 2,147,483,647 seconds). Modern 64-bit systems are unaffected, but embedded devices and old file formats may still bite.</p>
+      <h3>Why does my converted date look off by some hours?</h3>
+      <p>Timezones. A timestamp is an absolute instant; the "local time" row renders it in <em>your</em> browser's timezone, while the UTC row is timezone-free. When comparing with a server log, check which timezone the log uses.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../json-formatter/">🪄 JSON Formatter</a>
+        <a href="../base64/">🔁 Base64 Encode/Decode</a>
+        <a href="../case-converter/">🔤 Case Converter</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // live clock
+  var nowEl = document.getElementById('now');
+  function tick() { nowEl.textContent = Math.floor(Date.now() / 1000); }
+  tick();
+  setInterval(tick, 1000);
+
+  document.getElementById('copyNow').addEventListener('click', function () {
+    navigator.clipboard.writeText(nowEl.textContent).then(function () {
+      var s = document.getElementById('copyStatus');
+      s.textContent = 'Copied ✓';
+      setTimeout(function () { s.textContent = ''; }, 2000);
+    });
+  });
+
+  // timestamp -> date
+  var tsIn = document.getElementById('tsIn');
+
+  function rel(ms) {
+    var diff = (ms - Date.now()) / 1000;
+    var abs = Math.abs(diff);
+    var unit, val;
+    if (abs < 60) { val = abs; unit = 'second'; }
+    else if (abs < 3600) { val = abs / 60; unit = 'minute'; }
+    else if (abs < 86400) { val = abs / 3600; unit = 'hour'; }
+    else if (abs < 31557600) { val = abs / 86400; unit = 'day'; }
+    else { val = abs / 31557600; unit = 'year'; }
+    val = Math.round(val);
+    var phrase = val + ' ' + unit + (val === 1 ? '' : 's');
+    return diff < 0 ? phrase + ' ago' : 'in ' + phrase;
+  }
+
+  function convertTs() {
+    var raw = tsIn.value.trim();
+    var errEl = document.getElementById('tsErr');
+    var out = document.getElementById('tsOut');
+    errEl.textContent = '';
+    if (!raw) { out.style.display = 'none'; return; }
+    if (!/^-?\d+(\.\d+)?$/.test(raw)) {
+      out.style.display = 'none';
+      errEl.textContent = '✗ Enter a numeric timestamp.';
+      return;
+    }
+    var n = parseFloat(raw);
+    var isMs = Math.abs(n) >= 1e11;
+    var ms = isMs ? n : n * 1000;
+    var d = new Date(ms);
+    if (isNaN(d.getTime())) {
+      out.style.display = 'none';
+      errEl.textContent = '✗ That timestamp is out of range.';
+      return;
+    }
+    out.style.display = 'grid';
+    document.getElementById('oUnit').textContent = isMs ? 'milliseconds' : 'seconds';
+    document.getElementById('oLocal').textContent = d.toLocaleString(undefined, { timeZoneName: 'short' });
+    document.getElementById('oUtc').textContent = d.toUTCString();
+    document.getElementById('oIso').textContent = d.toISOString();
+    document.getElementById('oRel').textContent = rel(ms);
+  }
+
+  tsIn.addEventListener('input', convertTs);
+  document.getElementById('nowBtn').addEventListener('click', function () {
+    tsIn.value = Math.floor(Date.now() / 1000);
+    convertTs();
+  });
+
+  // date -> timestamp
+  document.getElementById('dateIn').addEventListener('input', function () {
+    var out = document.getElementById('dateOut');
+    if (!this.value) { out.style.display = 'none'; return; }
+    var d = new Date(this.value); // parsed as local time
+    if (isNaN(d.getTime())) { out.style.display = 'none'; return; }
+    out.style.display = 'grid';
+    document.getElementById('oSec').textContent = Math.floor(d.getTime() / 1000);
+    document.getElementById('oMs').textContent = d.getTime();
+    document.getElementById('oIso2').textContent = d.toISOString();
+  });
+})();
+</script>
+
+</body>
+</html>
