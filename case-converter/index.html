@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Converter — UPPERCASE, lowercase, Title, camelCase &amp; More</title>
+  <meta name="description" content="Convert text between UPPERCASE, lowercase, Title Case, Sentence case, camelCase, PascalCase, snake_case and kebab-case. Free, instant, in your browser.">
+  <link rel="canonical" href="https://a-haz.github.io/test/case-converter/">
+  <meta property="og:title" content="Case Converter — 9 Text Case Styles">
+  <meta property="og:description" content="Switch text between upper, lower, title, sentence, camel, Pascal, snake and kebab case instantly.">
+  <meta property="og:url" content="https://a-haz.github.io/test/case-converter/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Case Converter</h1>
+    <p class="tagline">Paste text, click a style, copy the result. Works for prose and for programming identifiers.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <textarea class="io" id="input" style="min-height:160px;" placeholder="Type or paste your text here…"></textarea>
+      <div class="controls">
+        <button class="btn btn-secondary" data-mode="upper">UPPERCASE</button>
+        <button class="btn btn-secondary" data-mode="lower">lowercase</button>
+        <button class="btn btn-secondary" data-mode="title">Title Case</button>
+        <button class="btn btn-secondary" data-mode="sentence">Sentence case</button>
+        <button class="btn btn-secondary" data-mode="camel">camelCase</button>
+        <button class="btn btn-secondary" data-mode="pascal">PascalCase</button>
+        <button class="btn btn-secondary" data-mode="snake">snake_case</button>
+        <button class="btn btn-secondary" data-mode="kebab">kebab-case</button>
+        <button class="btn btn-secondary" data-mode="alternating">aLtErNaTiNg</button>
+      </div>
+      <div class="controls">
+        <button class="btn" id="copyBtn">📋 Copy result</button>
+        <button class="btn btn-secondary" id="clearBtn">Clear</button>
+        <span class="status ok" id="status"></span>
+      </div>
+      <textarea class="io" id="output" style="min-height:160px;" readonly placeholder="Result appears here…"></textarea>
+    </div>
+
+    <div class="content-section">
+      <h2>When to use each style</h2>
+      <ul>
+        <li><strong>Title Case</strong> — headlines and titles. Small words (a, an, the, of, in…) stay lowercase unless first or last.</li>
+        <li><strong>Sentence case</strong> — normal prose: first letter of each sentence capitalized.</li>
+        <li><strong>camelCase / PascalCase</strong> — variables and class names in JavaScript, Java, C#, Go…</li>
+        <li><strong>snake_case</strong> — Python variables, database columns, file names.</li>
+        <li><strong>kebab-case</strong> — URLs, CSS classes, CLI flags.</li>
+      </ul>
+
+      <h2>FAQ</h2>
+      <h3>How does the programming-case conversion split words?</h3>
+      <p>It splits on spaces, punctuation, underscores and hyphens, and also on letter-case boundaries — so <code>XMLHttpRequest</code> becomes <code>xml_http_request</code> in snake_case. Numbers stick to the word they follow.</p>
+      <h3>Does Title Case follow a specific style guide?</h3>
+      <p>It follows the common convention shared by AP and Chicago: capitalize all words except short articles, conjunctions and prepositions — but always capitalize the first and last word. Style guides differ on edge cases, so give headlines a quick read.</p>
+      <h3>Is my text stored or sent anywhere?</h3>
+      <p>No — conversion happens instantly in your browser on a static page. Nothing is transmitted or saved.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../word-counter/">📝 Word Counter</a>
+        <a href="../json-formatter/">🪄 JSON Formatter</a>
+        <a href="../timestamp-converter/">⏱ Timestamp Converter</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var input = document.getElementById('input');
+  var output = document.getElementById('output');
+  var SMALL = { a:1, an:1, the:1, and:1, but:1, or:1, nor:1, for:1, so:1, yet:1, at:1, by:1, in:1, of:1, on:1, to:1, up:1, as:1, if:1, via:1 };
+
+  function words(text) {
+    // split on separators and case boundaries: "XMLHttpRequest v2" -> [XML, Http, Request, v2]
+    return text
+      .replace(/([a-z0-9])([A-Z])/g, '$1 $2')
+      .replace(/([A-Z]+)([A-Z][a-z])/g, '$1 $2')
+      .split(/[^A-Za-z0-9]+/)
+      .filter(Boolean);
+  }
+
+  function cap(w) { return w.charAt(0).toUpperCase() + w.slice(1).toLowerCase(); }
+
+  var modes = {
+    upper: function (t) { return t.toUpperCase(); },
+    lower: function (t) { return t.toLowerCase(); },
+    title: function (t) {
+      return t.toLowerCase().replace(/\S+/g, function (w, pos) {
+        var isFirst = pos === 0;
+        var isLast = pos + w.length >= t.trim().length;
+        var bare = w.replace(/[^a-z0-9']/g, '');
+        if (!isFirst && !isLast && SMALL[bare]) return w;
+        return w.charAt(0).toUpperCase() + w.slice(1);
+      });
+    },
+    sentence: function (t) {
+      return t.toLowerCase().replace(/(^\s*|[.!?]\s+)([a-z])/g, function (m, pre, ch) {
+        return pre + ch.toUpperCase();
+      });
+    },
+    camel: function (t) {
+      return words(t).map(function (w, i) { return i === 0 ? w.toLowerCase() : cap(w); }).join('');
+    },
+    pascal: function (t) { return words(t).map(cap).join(''); },
+    snake: function (t) { return words(t).join('_').toLowerCase(); },
+    kebab: function (t) { return words(t).join('-').toLowerCase(); },
+    alternating: function (t) {
+      var i = 0;
+      return t.replace(/[A-Za-z]/g, function (ch) {
+        return i++ % 2 === 0 ? ch.toLowerCase() : ch.toUpperCase();
+      });
+    }
+  };
+
+  document.querySelectorAll('[data-mode]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      output.value = modes[btn.getAttribute('data-mode')](input.value);
+    });
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', function () {
+    if (!output.value) return;
+    navigator.clipboard.writeText(output.value).then(function () {
+      var s = document.getElementById('status');
+      s.textContent = 'Copied ✓';
+      setTimeout(function () { s.textContent = ''; }, 2000);
+    });
+  });
+
+  document.getElementById('clearBtn').addEventListener('click', function () {
+    input.value = '';
+    output.value = '';
+  });
+})();
+</script>
+
+</body>
+</html>

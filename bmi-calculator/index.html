@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BMI Calculator — Body Mass Index in Metric or Imperial Units</title>
+  <meta name="description" content="Free BMI calculator with metric (kg/cm) and imperial (lb/ft) units. Get your body mass index, WHO category and healthy weight range for your height — instantly and privately.">
+  <link rel="canonical" href="https://a-haz.github.io/test/bmi-calculator/">
+  <meta property="og:title" content="BMI Calculator — Metric &amp; Imperial">
+  <meta property="og:description" content="Body mass index, WHO category and healthy weight range, calculated in your browser.">
+  <meta property="og:url" content="https://a-haz.github.io/test/bmi-calculator/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .unit-toggle { display: inline-flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
+    .unit-toggle button { border: none; background: var(--card); padding: 9px 18px; font-size: 0.95rem; cursor: pointer; color: var(--muted); }
+    .unit-toggle button.active { background: var(--accent); color: #fff; }
+    .bmi-scale { display: flex; border-radius: 6px; overflow: hidden; margin-top: 16px; font-size: 0.78rem; text-align: center; color: #fff; }
+    .bmi-scale div { padding: 6px 2px; }
+    .bmi-cat { font-size: 1.05rem; margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>BMI Calculator</h1>
+    <p class="tagline">Body mass index from your height and weight, in metric or imperial units. Calculated locally — your measurements are never sent anywhere.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <div class="controls">
+        <div class="unit-toggle">
+          <button id="metricBtn" class="active">Metric</button>
+          <button id="imperialBtn">Imperial</button>
+        </div>
+      </div>
+
+      <div class="field-row" id="metricFields">
+        <div class="field">
+          <label for="cm">Height (cm)</label>
+          <input type="number" id="cm" placeholder="175" min="0" step="any">
+        </div>
+        <div class="field">
+          <label for="kg">Weight (kg)</label>
+          <input type="number" id="kg" placeholder="70" min="0" step="any">
+        </div>
+      </div>
+
+      <div class="field-row" id="imperialFields" style="display:none;">
+        <div class="field">
+          <label for="ft">Height (ft)</label>
+          <input type="number" id="ft" placeholder="5" min="0" step="1">
+        </div>
+        <div class="field">
+          <label for="inch">+ (in)</label>
+          <input type="number" id="inch" placeholder="9" min="0" step="any">
+        </div>
+        <div class="field">
+          <label for="lb">Weight (lb)</label>
+          <input type="number" id="lb" placeholder="154" min="0" step="any">
+        </div>
+      </div>
+
+      <div class="stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+        <div class="stat"><span class="num" id="bmiVal">—</span><span class="lbl">Your BMI</span></div>
+        <div class="stat"><span class="num" id="healthyRange" style="font-size:1.1rem;">—</span><span class="lbl">Healthy weight for your height</span></div>
+      </div>
+      <p class="bmi-cat" id="bmiCat"></p>
+
+      <div class="bmi-scale">
+        <div style="flex:18.5; background:#60a5fa;">Under&nbsp;&lt;18.5</div>
+        <div style="flex:6.5; background:#16a34a;">Normal 18.5–25</div>
+        <div style="flex:5; background:#f59e0b;">Over 25–30</div>
+        <div style="flex:10; background:#dc2626;">Obese ≥30</div>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2>What is BMI?</h2>
+      <p>Body mass index is weight divided by height squared (kg/m²). The World Health Organization uses it as a quick population-level screening measure: under 18.5 is classed as underweight, 18.5–24.9 as a healthy range, 25–29.9 as overweight and 30+ as obese.</p>
+
+      <h2>FAQ</h2>
+      <h3>Is BMI accurate for everyone?</h3>
+      <p>No — it's a screening tool, not a diagnosis. It can't tell muscle from fat, so muscular athletes often score "overweight" while being very lean, and it can understate body fat in older adults. Waist circumference and body-fat percentage give a fuller picture. For any health decision, talk to a medical professional.</p>
+      <h3>How is BMI calculated in imperial units?</h3>
+      <p>BMI = 703 × weight (lb) ÷ height (in)². The 703 factor converts the result to the same kg/m² scale as the metric formula.</p>
+      <h3>What does the healthy weight range mean?</h3>
+      <p>It's the weight span that would put your BMI between 18.5 and 24.9 at your height — a reference range, not a personal target. Individual healthy weights vary with build, age and muscle mass.</p>
+      <h3>Is my data private?</h3>
+      <p>Completely. The calculation runs in your browser on a static page; your height and weight are never transmitted or stored.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
+        <a href="../salary-converter/">💰 Salary Converter</a>
+        <a href="../word-counter/">📝 Word Counter</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var metric = true;
+
+  function setMode(m) {
+    metric = m;
+    document.getElementById('metricBtn').className = m ? 'active' : '';
+    document.getElementById('imperialBtn').className = m ? '' : 'active';
+    document.getElementById('metricFields').style.display = m ? 'flex' : 'none';
+    document.getElementById('imperialFields').style.display = m ? 'none' : 'flex';
+    update();
+  }
+
+  function category(bmi) {
+    if (bmi < 18.5) return ['Underweight', '#60a5fa'];
+    if (bmi < 25) return ['Normal weight', '#16a34a'];
+    if (bmi < 30) return ['Overweight', '#f59e0b'];
+    return ['Obese', '#dc2626'];
+  }
+
+  function update() {
+    var meters = null, kg = null, rangeUnit, rangeFactor;
+    if (metric) {
+      var cm = parseFloat(document.getElementById('cm').value);
+      kg = parseFloat(document.getElementById('kg').value);
+      if (cm > 0) meters = cm / 100;
+      rangeUnit = 'kg'; rangeFactor = 1;
+    } else {
+      var ft = parseFloat(document.getElementById('ft').value) || 0;
+      var inch = parseFloat(document.getElementById('inch').value) || 0;
+      var totalIn = ft * 12 + inch;
+      var lb = parseFloat(document.getElementById('lb').value);
+      if (totalIn > 0) meters = totalIn * 0.0254;
+      if (lb > 0) kg = lb * 0.45359237;
+      rangeUnit = 'lb'; rangeFactor = 1 / 0.45359237;
+    }
+
+    var valEl = document.getElementById('bmiVal');
+    var catEl = document.getElementById('bmiCat');
+    var rangeEl = document.getElementById('healthyRange');
+
+    if (!meters || !kg || kg <= 0) {
+      valEl.textContent = '—';
+      catEl.textContent = '';
+      rangeEl.textContent = '—';
+      return;
+    }
+
+    var bmi = kg / (meters * meters);
+    var cat = category(bmi);
+    valEl.textContent = bmi.toFixed(1);
+    valEl.style.color = cat[1];
+    catEl.innerHTML = 'Category: <strong style="color:' + cat[1] + '">' + cat[0] + '</strong> (WHO classification)';
+
+    var lo = 18.5 * meters * meters * rangeFactor;
+    var hi = 24.9 * meters * meters * rangeFactor;
+    rangeEl.textContent = lo.toFixed(1) + ' – ' + hi.toFixed(1) + ' ' + rangeUnit;
+  }
+
+  document.getElementById('metricBtn').addEventListener('click', function () { setMode(true); });
+  document.getElementById('imperialBtn').addEventListener('click', function () { setMode(false); });
+  ['cm', 'kg', 'ft', 'inch', 'lb'].forEach(function (id) {
+    document.getElementById(id).addEventListener('input', update);
+  });
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Calculator — Monthly Payment, Total Interest &amp; Amortization</title>
+  <meta name="description" content="Free loan calculator: enter amount, interest rate and term to get your monthly payment, total interest and a full amortization schedule. Works for mortgages, car and personal loans.">
+  <link rel="canonical" href="https://a-haz.github.io/test/loan-calculator/">
+  <meta property="og:title" content="Loan Calculator — Payment, Interest &amp; Amortization Schedule">
+  <meta property="og:description" content="Monthly payment, total interest and full amortization schedule, calculated instantly in your browser.">
+  <meta property="og:url" content="https://a-haz.github.io/test/loan-calculator/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    table.amort { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin-top: 10px; font-variant-numeric: tabular-nums; }
+    table.amort th { text-align: right; padding: 6px 8px; border-bottom: 2px solid var(--border); color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    table.amort td { text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--border); }
+    table.amort th:first-child, table.amort td:first-child { text-align: left; }
+    table.amort tr.year-end td { font-weight: 600; background: var(--bg); }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Loan Calculator</h1>
+    <p class="tagline">Monthly payment, total interest and a full amortization schedule for any fixed-rate loan — mortgage, car or personal. Calculated instantly in your browser.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <div class="field-row">
+        <div class="field">
+          <label for="amount">Loan amount</label>
+          <input type="number" id="amount" value="250000" min="0" step="any">
+        </div>
+        <div class="field">
+          <label for="rate">Interest rate (% per year)</label>
+          <input type="number" id="rate" value="6" min="0" step="0.01">
+        </div>
+        <div class="field">
+          <label for="years">Term (years)</label>
+          <input type="number" id="years" value="30" min="0" step="1">
+        </div>
+        <div class="field">
+          <label for="currency">Currency</label>
+          <select id="currency">
+            <option value="$">USD ($)</option>
+            <option value="€">EUR (€)</option>
+            <option value="£">GBP (£)</option>
+            <option value="RM">MYR (RM)</option>
+            <option value="₹">INR (₹)</option>
+            <option value="A$">AUD (A$)</option>
+            <option value="C$">CAD (C$)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat"><span class="num" id="monthly">—</span><span class="lbl">Monthly payment</span></div>
+        <div class="stat"><span class="num" id="totalPaid">—</span><span class="lbl">Total paid</span></div>
+        <div class="stat"><span class="num" id="totalInterest">—</span><span class="lbl">Total interest</span></div>
+      </div>
+
+      <div class="controls" style="margin-top:18px;">
+        <button class="btn btn-secondary" id="toggleAmort">Show amortization schedule</button>
+      </div>
+      <div id="amortWrap" style="display:none; overflow-x:auto;">
+        <table class="amort">
+          <thead><tr><th>Month</th><th>Payment</th><th>Principal</th><th>Interest</th><th>Balance</th></tr></thead>
+          <tbody id="amortBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2>How the payment is calculated</h2>
+      <p>For a fixed-rate loan, the monthly payment is <strong>M&nbsp;=&nbsp;P·r(1+r)ⁿ&nbsp;/&nbsp;((1+r)ⁿ&nbsp;−&nbsp;1)</strong>, where P is the amount borrowed, r is the monthly interest rate (annual rate ÷ 12) and n is the number of monthly payments. Early payments are mostly interest; later ones mostly principal — the schedule above shows exactly how the balance falls.</p>
+
+      <h2>FAQ</h2>
+      <h3>Does this work for mortgages, car loans and personal loans?</h3>
+      <p>Yes — the math is identical for any amortizing fixed-rate loan. It does not model variable rates, interest-only periods or fees rolled into the loan.</p>
+      <h3>What's the difference between interest rate and APR?</h3>
+      <p>The interest rate is the cost of borrowing the principal. APR additionally folds in mandatory fees (origination, some closing costs), so it's usually a bit higher and better for comparing offers. This calculator uses the plain interest rate.</p>
+      <h3>How do extra payments help?</h3>
+      <p>Anything you pay above the required payment goes straight to principal, which shrinks every future interest charge. Even small recurring overpayments early in the term can cut years off a long loan — check the schedule to see how slowly the balance falls in the first years.</p>
+      <h3>Is my financial data sent anywhere?</h3>
+      <p>No. This page is static and the calculation runs entirely in your browser. Nothing you type is transmitted or stored.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../salary-converter/">💰 Salary Converter</a>
+        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
+        <a href="../invoice-generator/">🧾 Invoice Generator</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var els = ['amount', 'rate', 'years', 'currency'].map(function (id) { return document.getElementById(id); });
+  var amortVisible = false;
+
+  function fmt(n, cur) {
+    return cur + ' ' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function calc() {
+    var P = parseFloat(els[0].value);
+    var annual = parseFloat(els[1].value);
+    var years = parseFloat(els[2].value);
+    var cur = els[3].value;
+    if (!(P > 0) || !(years > 0) || isNaN(annual) || annual < 0) {
+      ['monthly', 'totalPaid', 'totalInterest'].forEach(function (id) {
+        document.getElementById(id).textContent = '—';
+      });
+      document.getElementById('amortBody').innerHTML = '';
+      return;
+    }
+    var n = Math.round(years * 12);
+    var r = annual / 100 / 12;
+    var M = r === 0 ? P / n : P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+
+    document.getElementById('monthly').textContent = fmt(M, cur);
+    document.getElementById('totalPaid').textContent = fmt(M * n, cur);
+    document.getElementById('totalInterest').textContent = fmt(M * n - P, cur);
+
+    if (amortVisible) renderAmort(P, r, n, M, cur);
+  }
+
+  function renderAmort(P, r, n, M, cur) {
+    var rows = [];
+    var bal = P;
+    for (var m = 1; m <= n; m++) {
+      var interest = bal * r;
+      var principal = M - interest;
+      bal = Math.max(0, bal - principal);
+      rows.push('<tr' + (m % 12 === 0 ? ' class="year-end"' : '') + '><td>' + m +
+        '</td><td>' + fmt(M, cur) + '</td><td>' + fmt(principal, cur) +
+        '</td><td>' + fmt(interest, cur) + '</td><td>' + fmt(bal, cur) + '</td></tr>');
+    }
+    document.getElementById('amortBody').innerHTML = rows.join('');
+  }
+
+  els.forEach(function (el) { el.addEventListener('input', calc); el.addEventListener('change', calc); });
+
+  document.getElementById('toggleAmort').addEventListener('click', function () {
+    amortVisible = !amortVisible;
+    document.getElementById('amortWrap').style.display = amortVisible ? 'block' : 'none';
+    this.textContent = amortVisible ? 'Hide amortization schedule' : 'Show amortization schedule';
+    calc();
+  });
+
+  calc();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Salary Converter — Hourly to Annual Salary &amp; Back</title>
+  <meta name="description" content="Convert between hourly, daily, weekly, monthly and annual pay. Free salary calculator with adjustable hours per week and weeks per year — see your full pay breakdown instantly.">
+  <link rel="canonical" href="https://a-haz.github.io/test/salary-converter/">
+  <meta property="og:title" content="Salary Converter — Hourly ⇄ Annual">
+  <meta property="og:description" content="Hourly, daily, weekly, monthly and yearly pay equivalents, calculated instantly in your browser.">
+  <meta property="og:url" content="https://a-haz.github.io/test/salary-converter/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Salary Converter</h1>
+    <p class="tagline">Enter any pay figure — hourly, monthly, annual — and see all the equivalents. Adjust hours per week and weeks per year to match your situation.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <div class="field-row">
+        <div class="field">
+          <label for="amount">Amount</label>
+          <input type="number" id="amount" value="25" min="0" step="any">
+        </div>
+        <div class="field">
+          <label for="period">Per</label>
+          <select id="period">
+            <option value="hour" selected>Hour</option>
+            <option value="day">Day</option>
+            <option value="week">Week</option>
+            <option value="month">Month</option>
+            <option value="year">Year</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="hoursWeek">Hours / week</label>
+          <input type="number" id="hoursWeek" value="40" min="1" step="any">
+        </div>
+        <div class="field">
+          <label for="weeksYear">Paid weeks / year</label>
+          <input type="number" id="weeksYear" value="52" min="1" max="53" step="any">
+        </div>
+      </div>
+
+      <div class="stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));">
+        <div class="stat"><span class="num" id="oHour">—</span><span class="lbl">Hourly</span></div>
+        <div class="stat"><span class="num" id="oDay">—</span><span class="lbl">Daily (8h)</span></div>
+        <div class="stat"><span class="num" id="oWeek">—</span><span class="lbl">Weekly</span></div>
+        <div class="stat"><span class="num" id="oMonth">—</span><span class="lbl">Monthly</span></div>
+        <div class="stat"><span class="num" id="oYear">—</span><span class="lbl">Yearly</span></div>
+      </div>
+      <p class="status" id="note" style="color:var(--muted);"></p>
+    </div>
+
+    <div class="content-section">
+      <h2>How the conversion works</h2>
+      <p>Everything is derived from your hourly rate: weekly = hourly × hours/week, yearly = weekly × paid weeks/year, monthly = yearly ÷ 12, and daily assumes an 8-hour day. The common US shorthand "annual = hourly × 2,080" is just 40 hours × 52 weeks.</p>
+
+      <h2>FAQ</h2>
+      <h3>Is this gross or net pay?</h3>
+      <p>Gross — before income tax, social contributions, retirement deductions and benefits. Net (take-home) pay depends on your country, tax bracket and deductions, so no simple converter can compute it universally.</p>
+      <h3>What should I put for paid weeks per year?</h3>
+      <p>52 if you're salaried or get paid vacation. If you're a freelancer or hourly worker who doesn't earn while away, subtract your unpaid weeks — e.g. 48 if you take four unpaid weeks off. This is also the honest way to compare a freelance rate against a salary.</p>
+      <h3>Why is the monthly figure not weekly × 4?</h3>
+      <p>Because months average 4.33 weeks (52 ÷ 12). Weekly × 4 understates monthly pay by about 8%.</p>
+      <h3>Freelancer tip: don't just match your old salary</h3>
+      <p>Freelance rates need to cover unpaid time off, sick days, equipment, insurance and self-employment taxes — a common rule of thumb is that a contractor's hourly rate should be 1.5–2× the equivalent employee hourly rate.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../invoice-generator/">🧾 Invoice Generator</a>
+        <a href="../loan-calculator/">🏦 Loan Calculator</a>
+        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var ids = ['amount', 'period', 'hoursWeek', 'weeksYear'];
+
+  function fmt(n) {
+    return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function update() {
+    var amount = parseFloat(document.getElementById('amount').value);
+    var period = document.getElementById('period').value;
+    var hw = parseFloat(document.getElementById('hoursWeek').value);
+    var wy = parseFloat(document.getElementById('weeksYear').value);
+
+    var out = { oHour: '—', oDay: '—', oWeek: '—', oMonth: '—', oYear: '—' };
+    var note = '';
+
+    if (amount >= 0 && hw > 0 && wy > 0 && !isNaN(amount)) {
+      // hours represented by one unit of each period
+      var hoursPer = {
+        hour: 1,
+        day: 8,
+        week: hw,
+        month: hw * wy / 12,
+        year: hw * wy
+      };
+      var hourly = amount / hoursPer[period];
+      out.oHour = fmt(hourly);
+      out.oDay = fmt(hourly * 8);
+      out.oWeek = fmt(hourly * hw);
+      out.oMonth = fmt(hourly * hw * wy / 12);
+      out.oYear = fmt(hourly * hw * wy);
+      note = 'Based on ' + hw + ' hours/week and ' + wy + ' paid weeks/year. Figures are gross (before tax).';
+    }
+
+    for (var id in out) document.getElementById(id).textContent = out[id];
+    document.getElementById('note').textContent = note;
+  }
+
+  ids.forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener('input', update);
+    el.addEventListener('change', update);
+  });
+  update();
+})();
+</script>
+
+</body>
+</html>

@@ -12,11 +12,23 @@ never leaves the browser.
 | Tool | Path | Search intent |
 |---|---|---|
 | 🧾 Invoice Generator | `/invoice-generator/` | "free invoice generator" — high commercial intent |
+| 🖼️ Image Compressor & Resizer | `/image-compressor/` | "compress image" — huge volume; privacy angle is the differentiator |
+| 📱 QR Code Generator | `/qr-code-generator/` | "qr code generator free" — huge volume; "never expires" is the hook |
+| 🏦 Loan Calculator | `/loan-calculator/` | "loan calculator" — finance niche, top-tier ad CPC |
+| ⚖️ BMI Calculator | `/bmi-calculator/` | "bmi calculator" — health niche, high volume + CPC |
+| 💰 Salary Converter | `/salary-converter/` | "hourly to salary" — finance niche |
 | 🪄 JSON Formatter & Validator | `/json-formatter/` | "json formatter", "json validator" |
 | 🔐 Password Generator | `/password-generator/` | "password generator" |
 | 📝 Word Counter | `/word-counter/` | "word counter", "character count" |
 | 🔁 Base64 Encode/Decode | `/base64/` | "base64 decode" |
 | 📊 Percentage Calculator | `/percentage-calculator/` | "percentage calculator" |
+| ⏱ Timestamp Converter | `/timestamp-converter/` | "unix timestamp converter", "epoch converter" |
+| 🔤 Case Converter | `/case-converter/` | "case converter", "title case converter" |
+
+The QR tool bundles the MIT-licensed
+[qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator)
+library (vendored at `qr-code-generator/qrcode.js`); everything else is
+hand-written vanilla JS.
 
 Plus: `privacy.html`, `404.html`, `sitemap.xml`, `robots.txt`.
 

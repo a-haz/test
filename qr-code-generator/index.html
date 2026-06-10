@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator — Free, No Sign-Up, Codes Never Expire</title>
+  <meta name="description" content="Generate QR codes for URLs, Wi-Fi, text or contact details and download them as PNG — free, no sign-up, no expiry. Generated locally in your browser, never uploaded.">
+  <link rel="canonical" href="https://a-haz.github.io/test/qr-code-generator/">
+  <meta property="og:title" content="QR Code Generator — Free &amp; Permanent">
+  <meta property="og:description" content="Create and download QR codes locally in your browser. No sign-up, no tracking, codes never expire.">
+  <meta property="og:url" content="https://a-haz.github.io/test/qr-code-generator/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .qr-out { text-align: center; padding: 20px 0 6px; }
+    .qr-out img { border: 1px solid var(--border); border-radius: 8px; image-rendering: pixelated; max-width: 100%; }
+    .qr-meta { color: var(--muted); font-size: 0.88rem; margin-top: 8px; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>QR Code Generator</h1>
+    <p class="tagline">Type anything — a URL, Wi-Fi details, plain text — and get a QR code instantly. Generated locally in your browser, so it's private, free, and the code <strong>never expires</strong>.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <textarea class="io" id="input" style="min-height:90px;" placeholder="https://example.com — or any text, up to ~2,900 characters">https://a-haz.github.io/test/</textarea>
+
+      <div class="controls">
+        <label>Size
+          <select id="size">
+            <option value="4">Small</option>
+            <option value="8" selected>Medium</option>
+            <option value="12">Large</option>
+            <option value="20">Extra large</option>
+          </select>
+        </label>
+        <label>Error correction
+          <select id="ecl">
+            <option value="L">L — 7% (densest)</option>
+            <option value="M" selected>M — 15% (recommended)</option>
+            <option value="Q">Q — 25%</option>
+            <option value="H">H — 30% (most robust)</option>
+          </select>
+        </label>
+        <a class="btn" id="downloadBtn" download="qr-code.png">⬇ Download PNG</a>
+      </div>
+
+      <p class="status err" id="error"></p>
+      <div class="qr-out">
+        <img id="qrImg" alt="Generated QR code">
+        <p class="qr-meta" id="meta"></p>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2>Quick recipes</h2>
+      <ul>
+        <li><strong>Website:</strong> just paste the URL, including <code>https://</code>.</li>
+        <li><strong>Wi-Fi access:</strong> <code>WIFI:T:WPA;S:NetworkName;P:password;;</code> — scanning joins the network automatically.</li>
+        <li><strong>Email:</strong> <code>mailto:you@example.com</code> &nbsp;·&nbsp; <strong>Phone:</strong> <code>tel:+15551234567</code> &nbsp;·&nbsp; <strong>SMS:</strong> <code>smsto:+15551234567:Hello</code></li>
+        <li><strong>Location:</strong> <code>geo:3.1390,101.6869</code></li>
+      </ul>
+
+      <h2>FAQ</h2>
+      <h3>Do these QR codes expire or stop working?</h3>
+      <p>Never. Many "free" QR services route your code through their server and disable it unless you pay — that's the catch. The codes generated here encode your content directly, so they work as long as QR scanning exists. (The flip side: the content can't be edited after printing, since it's baked into the code.)</p>
+      <h3>Is my data uploaded?</h3>
+      <p>No. The QR code is computed entirely in your browser by an open-source JavaScript library bundled with this page. You can disconnect from the internet and it still works.</p>
+      <h3>Which error correction level should I use?</h3>
+      <p>M (15%) is right for most uses. Pick H (30%) if the code will be printed small, might get scuffed, or if you plan to put a logo over the middle. Higher correction makes the code denser, so it needs to be printed slightly larger to stay scannable.</p>
+      <h3>How much can a QR code hold?</h3>
+      <p>Up to about 2,950 bytes — roughly 2,900 characters of plain text. But shorter is better: less content means a coarser, easier-to-scan code. For long URLs, consider a short link.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../image-compressor/">🖼️ Image Compressor</a>
+        <a href="../base64/">🔁 Base64 Encode/Decode</a>
+        <a href="../password-generator/">🔐 Password Generator</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a> · QR encoding by <a href="https://github.com/kazuhikoarase/qrcode-generator" rel="noopener">qrcode-generator</a> (MIT). "QR Code" is a registered trademark of DENSO WAVE.</p>
+  </div>
+</footer>
+
+<script src="qrcode.js"></script>
+<script>
+(function () {
+  var input = document.getElementById('input');
+  var img = document.getElementById('qrImg');
+  var debounceTimer = null;
+
+  function generate() {
+    var text = input.value;
+    var err = document.getElementById('error');
+    err.textContent = '';
+    if (!text) {
+      img.removeAttribute('src');
+      document.getElementById('meta').textContent = '';
+      return;
+    }
+    try {
+      var qr = qrcode(0, document.getElementById('ecl').value); // type 0 = auto-size
+      qr.addData(text);
+      qr.make();
+      var cell = parseInt(document.getElementById('size').value, 10);
+      var dataUrl = qr.createDataURL(cell, cell * 2);
+
+      // convert GIF data URL to PNG via canvas for a more universal download
+      var tmp = new Image();
+      tmp.onload = function () {
+        var canvas = document.createElement('canvas');
+        canvas.width = tmp.width;
+        canvas.height = tmp.height;
+        canvas.getContext('2d').drawImage(tmp, 0, 0);
+        var png = canvas.toDataURL('image/png');
+        img.src = png;
+        document.getElementById('downloadBtn').href = png;
+        document.getElementById('meta').textContent =
+          qr.getModuleCount() + '×' + qr.getModuleCount() + ' modules · ' +
+          text.length.toLocaleString() + ' characters encoded';
+      };
+      tmp.src = dataUrl;
+    } catch (e) {
+      err.textContent = '✗ Content too long for a QR code at this error-correction level. Shorten it or lower the level.';
+    }
+  }
+
+  input.addEventListener('input', function () {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(generate, 200);
+  });
+  document.getElementById('size').addEventListener('change', generate);
+  document.getElementById('ecl').addEventListener('change', generate);
+  generate();
+})();
+</script>
+
+</body>
+</html>
