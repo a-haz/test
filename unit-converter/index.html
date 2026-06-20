@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Converter — Length, Weight, Temperature, Volume &amp; More</title>
+  <meta name="description" content="Free online unit converter for length, weight, temperature, volume, area, speed and data. Convert metric and imperial units instantly in your browser — no sign-up.">
+  <link rel="canonical" href="https://a-haz.github.io/test/unit-converter/">
+  <meta property="og:title" content="Unit Converter — Metric &amp; Imperial">
+  <meta property="og:description" content="Convert length, weight, temperature, volume, area, speed and data instantly in your browser.">
+  <meta property="og:url" content="https://a-haz.github.io/test/unit-converter/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .cat-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 18px; }
+    .cat-tabs button { border: 1px solid var(--border); background: var(--card); padding: 8px 14px; border-radius: 999px; cursor: pointer; font-size: 0.9rem; color: var(--muted); }
+    .cat-tabs button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .conv-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 12px; align-items: end; }
+    .conv-row .swap { align-self: center; margin-bottom: 4px; }
+    .conv-row input { font-size: 1.2rem; }
+    @media (max-width: 540px) { .conv-row { grid-template-columns: 1fr; } .conv-row .swap { justify-self: center; } }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Unit Converter</h1>
+    <p class="tagline">Convert between metric and imperial units across seven categories. Results update as you type.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <div class="cat-tabs" id="catTabs"></div>
+      <div class="conv-row">
+        <div class="field">
+          <label for="fromVal">From</label>
+          <input type="number" id="fromVal" value="1" step="any">
+          <select id="fromUnit" style="margin-top:8px;"></select>
+        </div>
+        <button class="btn btn-secondary swap" id="swapBtn" title="Swap units">⇄</button>
+        <div class="field">
+          <label for="toVal">To</label>
+          <input type="number" id="toVal" step="any">
+          <select id="toUnit" style="margin-top:8px;"></select>
+        </div>
+      </div>
+      <p class="result-box" id="formula" style="margin-top:18px;">—</p>
+    </div>
+
+    <div class="content-section">
+      <h2>FAQ</h2>
+      <h3>How accurate are the conversions?</h3>
+      <p>The factors use internationally defined exact values (for example 1 inch = 25.4 mm exactly, 1 pound = 0.45359237 kg exactly), so conversions are accurate to full floating-point precision. Temperature uses the exact Celsius/Fahrenheit/Kelvin formulas.</p>
+      <h3>What's the difference between US and imperial gallons?</h3>
+      <p>They're different: a US gallon is about 3.785 litres while an imperial (UK) gallon is about 4.546 litres. This tool's "gallon" is the US gallon, which is the more common default online; convert via litres if you need the imperial one.</p>
+      <h3>Is anything sent to a server?</h3>
+      <p>No — all conversion happens in your browser on a static page.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
+        <a href="../bmi-calculator/">⚖️ BMI Calculator</a>
+        <a href="../timestamp-converter/">⏱ Timestamp Converter</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Each unit maps to a factor relative to a base unit. value_in_base = value * factor.
+  var CATS = {
+    Length: {
+      base: 'm',
+      units: { Kilometres: 1000, Metres: 1, Centimetres: 0.01, Millimetres: 0.001, Miles: 1609.344, Yards: 0.9144, Feet: 0.3048, Inches: 0.0254, 'Nautical miles': 1852 },
+      def: ['Miles', 'Kilometres']
+    },
+    Weight: {
+      base: 'kg',
+      units: { Tonnes: 1000, Kilograms: 1, Grams: 0.001, Milligrams: 0.000001, Pounds: 0.45359237, Ounces: 0.028349523125, Stone: 6.35029318 },
+      def: ['Pounds', 'Kilograms']
+    },
+    Volume: {
+      base: 'L',
+      units: { Litres: 1, Millilitres: 0.001, 'Cubic metres': 1000, 'Gallons (US)': 3.785411784, 'Quarts (US)': 0.946352946, 'Pints (US)': 0.473176473, 'Cups (US)': 0.2365882365, 'Fluid oz (US)': 0.0295735295625 },
+      def: ['Gallons (US)', 'Litres']
+    },
+    Area: {
+      base: 'm2',
+      units: { 'Square km': 1000000, Hectares: 10000, 'Square metres': 1, 'Square feet': 0.09290304, Acres: 4046.8564224, 'Square miles': 2589988.110336 },
+      def: ['Acres', 'Hectares']
+    },
+    Speed: {
+      base: 'mps',
+      units: { 'Metres/sec': 1, 'Km/hour': 0.277777778, 'Miles/hour': 0.44704, Knots: 0.514444444, 'Feet/sec': 0.3048 },
+      def: ['Miles/hour', 'Km/hour']
+    },
+    Data: {
+      base: 'byte',
+      units: { Bits: 0.125, Bytes: 1, Kilobytes: 1024, Megabytes: 1048576, Gigabytes: 1073741824, Terabytes: 1099511627776 },
+      def: ['Megabytes', 'Gigabytes']
+    },
+    Temperature: { temp: true, units: { Celsius: 1, Fahrenheit: 1, Kelvin: 1 }, def: ['Celsius', 'Fahrenheit'] }
+  };
+
+  var current = 'Length';
+  var fromUnit = document.getElementById('fromUnit');
+  var toUnit = document.getElementById('toUnit');
+  var fromVal = document.getElementById('fromVal');
+  var toVal = document.getElementById('toVal');
+
+  function toBaseTemp(v, unit) {
+    if (unit === 'Celsius') return v;
+    if (unit === 'Fahrenheit') return (v - 32) * 5 / 9;
+    return v - 273.15; // Kelvin -> C
+  }
+  function fromBaseTemp(c, unit) {
+    if (unit === 'Celsius') return c;
+    if (unit === 'Fahrenheit') return c * 9 / 5 + 32;
+    return c + 273.15;
+  }
+
+  function fmt(n) {
+    if (!isFinite(n)) return '';
+    return parseFloat(n.toPrecision(10)).toLocaleString(undefined, { maximumFractionDigits: 8 });
+  }
+
+  function convert(forward) {
+    var cat = CATS[current];
+    var src = forward ? fromVal : toVal;
+    var dst = forward ? toVal : fromVal;
+    var srcUnit = (forward ? fromUnit : toUnit).value;
+    var dstUnit = (forward ? toUnit : fromUnit).value;
+    var v = parseFloat(src.value);
+    if (isNaN(v)) { dst.value = ''; updateFormula(); return; }
+    var result;
+    if (cat.temp) {
+      result = fromBaseTemp(toBaseTemp(v, srcUnit), dstUnit);
+    } else {
+      result = v * cat.units[srcUnit] / cat.units[dstUnit];
+    }
+    dst.value = fmt(result);
+    updateFormula();
+  }
+
+  function updateFormula() {
+    var v = parseFloat(fromVal.value);
+    if (isNaN(v)) { document.getElementById('formula').textContent = '—'; return; }
+    document.getElementById('formula').innerHTML =
+      '<strong>' + fmt(v) + '</strong> ' + fromUnit.value + ' = <strong>' + (toVal.value || '0') + '</strong> ' + toUnit.value;
+  }
+
+  function fillUnits() {
+    var cat = CATS[current];
+    var opts = Object.keys(cat.units).map(function (u) { return '<option>' + u + '</option>'; }).join('');
+    fromUnit.innerHTML = opts;
+    toUnit.innerHTML = opts;
+    fromUnit.value = cat.def[0];
+    toUnit.value = cat.def[1];
+    convert(true);
+  }
+
+  function buildTabs() {
+    document.getElementById('catTabs').innerHTML = Object.keys(CATS).map(function (c) {
+      return '<button data-cat="' + c + '"' + (c === current ? ' class="active"' : '') + '>' + c + '</button>';
+    }).join('');
+    document.querySelectorAll('#catTabs button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        current = b.getAttribute('data-cat');
+        document.querySelectorAll('#catTabs button').forEach(function (x) { x.className = ''; });
+        b.className = 'active';
+        fillUnits();
+      });
+    });
+  }
+
+  fromVal.addEventListener('input', function () { convert(true); });
+  toVal.addEventListener('input', function () { convert(false); });
+  fromUnit.addEventListener('change', function () { convert(true); });
+  toUnit.addEventListener('change', function () { convert(true); });
+  document.getElementById('swapBtn').addEventListener('click', function () {
+    var u = fromUnit.value; fromUnit.value = toUnit.value; toUnit.value = u;
+    convert(true);
+  });
+
+  buildTabs();
+  fillUnits();
+})();
+</script>
+
+</body>
+</html>
