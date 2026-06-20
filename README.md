@@ -17,18 +17,36 @@ never leaves the browser.
 | 🏦 Loan Calculator | `/loan-calculator/` | "loan calculator" — finance niche, top-tier ad CPC |
 | ⚖️ BMI Calculator | `/bmi-calculator/` | "bmi calculator" — health niche, high volume + CPC |
 | 💰 Salary Converter | `/salary-converter/` | "hourly to salary" — finance niche |
+| 📈 Compound Interest Calculator | `/compound-interest-calculator/` | "compound interest calculator" — finance niche, top CPC |
+| 🏷️ Discount & Tip Calculator | `/discount-calculator/` | "discount calculator", "tip calculator" |
+| 📐 Unit Converter | `/unit-converter/` | "unit converter", "cm to inches" etc. — huge volume |
+| 🎂 Age Calculator | `/age-calculator/` | "age calculator" — high volume |
 | 🪄 JSON Formatter & Validator | `/json-formatter/` | "json formatter", "json validator" |
 | 🔐 Password Generator | `/password-generator/` | "password generator" |
+| #️⃣ Hash Generator | `/hash-generator/` | "sha256 generator", "sha512 hash" |
+| 🔍 Text Diff Checker | `/text-diff/` | "text diff", "compare two texts" |
 | 📝 Word Counter | `/word-counter/` | "word counter", "character count" |
 | 🔁 Base64 Encode/Decode | `/base64/` | "base64 decode" |
 | 📊 Percentage Calculator | `/percentage-calculator/` | "percentage calculator" |
 | ⏱ Timestamp Converter | `/timestamp-converter/` | "unix timestamp converter", "epoch converter" |
 | 🔤 Case Converter | `/case-converter/` | "case converter", "title case converter" |
 
+### Guides (`/guides/`)
+
+Informational articles that target "how-to" searches and funnel readers
+into the matching tool with in-content calls to action:
+
+| Guide | Funnels to |
+|---|---|
+| How to Write an Invoice | Invoice Generator |
+| How to Compress Images for Email | Image Compressor |
+
 The QR tool bundles the MIT-licensed
 [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator)
 library (vendored at `qr-code-generator/qrcode.js`); everything else is
-hand-written vanilla JS.
+hand-written vanilla JS. Hashing uses the native Web Crypto `SubtleCrypto`
+API (SHA family only — MD5 is intentionally omitted as browsers don't
+provide it and it's broken).
 
 Plus: `privacy.html`, `404.html`, `sitemap.xml`, `robots.txt`.
 

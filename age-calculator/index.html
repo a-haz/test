@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Age Calculator — Your Exact Age in Years, Months &amp; Days</title>
+  <meta name="description" content="Calculate your exact age in years, months and days from your date of birth, plus total days, hours and your next birthday countdown. Free, private, in your browser.">
+  <link rel="canonical" href="https://a-haz.github.io/test/age-calculator/">
+  <meta property="og:title" content="Age Calculator — Exact Age &amp; Next Birthday">
+  <meta property="og:description" content="Your exact age in years, months and days plus a next-birthday countdown, calculated in your browser.">
+  <meta property="og:url" content="https://a-haz.github.io/test/age-calculator/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Age Calculator</h1>
+    <p class="tagline">Enter a date of birth to get the exact age in years, months and days — plus totals and a countdown to the next birthday.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <div class="field-row">
+        <div class="field">
+          <label for="dob">Date of birth</label>
+          <input type="date" id="dob">
+        </div>
+        <div class="field">
+          <label for="asof">Age at date (default: today)</label>
+          <input type="date" id="asof">
+        </div>
+      </div>
+
+      <div class="result-box" id="mainAge" style="font-size:1.3rem;">Pick a date of birth above.</div>
+
+      <div class="stat-grid" style="margin-top:16px;">
+        <div class="stat"><span class="num" id="totalMonths">—</span><span class="lbl">Total months</span></div>
+        <div class="stat"><span class="num" id="totalWeeks">—</span><span class="lbl">Total weeks</span></div>
+        <div class="stat"><span class="num" id="totalDays">—</span><span class="lbl">Total days</span></div>
+        <div class="stat"><span class="num" id="totalHours">—</span><span class="lbl">Total hours</span></div>
+      </div>
+      <p class="status ok" id="nextBday" style="margin-top:14px;"></p>
+    </div>
+
+    <div class="content-section">
+      <h2>FAQ</h2>
+      <h3>How is age calculated exactly?</h3>
+      <p>It counts complete years from your birth date, then complete months, then leftover days — the same way you'd say "32 years, 4 months and 9 days". Month lengths and leap years are handled correctly by borrowing the actual number of days in the preceding month, so the result always matches the calendar.</p>
+      <h3>Why might this differ from a quick "today minus birth year"?</h3>
+      <p>Subtracting years alone ignores whether your birthday has happened yet this year. This tool checks the month and day, so someone born in December isn't counted a year older until December.</p>
+      <h3>Can I find my age on a past or future date?</h3>
+      <p>Yes — set the "Age at date" field to any date to see how old you were (or will be) then. Leave it blank to use today.</p>
+      <h3>Is my birth date stored anywhere?</h3>
+      <p>No. Everything is computed in your browser; nothing is transmitted or saved.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../timestamp-converter/">⏱ Timestamp Converter</a>
+        <a href="../bmi-calculator/">⚖️ BMI Calculator</a>
+        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var dob = document.getElementById('dob');
+  var asof = document.getElementById('asof');
+
+  function daysInMonth(year, month) { return new Date(year, month + 1, 0).getDate(); }
+
+  function update() {
+    if (!dob.value) {
+      document.getElementById('mainAge').textContent = 'Pick a date of birth above.';
+      ['totalMonths', 'totalWeeks', 'totalDays', 'totalHours'].forEach(function (id) {
+        document.getElementById(id).textContent = '—';
+      });
+      document.getElementById('nextBday').textContent = '';
+      return;
+    }
+    var birth = new Date(dob.value + 'T00:00:00');
+    var now = asof.value ? new Date(asof.value + 'T00:00:00') : new Date();
+
+    if (birth > now) {
+      document.getElementById('mainAge').textContent = 'That date is in the future.';
+      return;
+    }
+
+    var years = now.getFullYear() - birth.getFullYear();
+    var months = now.getMonth() - birth.getMonth();
+    var days = now.getDate() - birth.getDate();
+
+    if (days < 0) {
+      months--;
+      // days in the month before the "now" month
+      var prevMonth = now.getMonth() - 1;
+      var prevYear = now.getFullYear();
+      if (prevMonth < 0) { prevMonth = 11; prevYear--; }
+      days += daysInMonth(prevYear, prevMonth);
+    }
+    if (months < 0) { years--; months += 12; }
+
+    document.getElementById('mainAge').innerHTML =
+      '<strong>' + years + '</strong> years, <strong>' + months + '</strong> months, <strong>' + days + '</strong> days';
+
+    var msDiff = now - birth;
+    var totalDays = Math.floor(msDiff / 86400000);
+    var totalMonths = years * 12 + months;
+    document.getElementById('totalMonths').textContent = totalMonths.toLocaleString();
+    document.getElementById('totalWeeks').textContent = Math.floor(totalDays / 7).toLocaleString();
+    document.getElementById('totalDays').textContent = totalDays.toLocaleString();
+    document.getElementById('totalHours').textContent = Math.floor(msDiff / 3600000).toLocaleString();
+
+    // next birthday
+    var next = new Date(now.getFullYear(), birth.getMonth(), birth.getDate());
+    if (next < now || next.getTime() === now.getTime()) next.setFullYear(now.getFullYear() + 1);
+    var daysToNext = Math.ceil((next - now) / 86400000);
+    if (daysToNext === 0) {
+      document.getElementById('nextBday').textContent = '🎉 Happy birthday — that date is today!';
+    } else {
+      document.getElementById('nextBday').textContent =
+        '🎂 Next birthday in ' + daysToNext + ' day' + (daysToNext === 1 ? '' : 's') +
+        ' (' + next.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ').';
+    }
+  }
+
+  dob.addEventListener('input', update);
+  asof.addEventListener('input', update);
+})();
+</script>
+
+</body>
+</html>
