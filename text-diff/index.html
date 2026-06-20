@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Diff Checker — Compare Two Texts Line by Line</title>
+  <meta name="description" content="Free online diff checker: paste two blocks of text and see added, removed and unchanged lines highlighted. Runs entirely in your browser — nothing is uploaded.">
+  <link rel="canonical" href="https://a-haz.github.io/test/text-diff/">
+  <meta property="og:title" content="Text Diff Checker — Compare Two Texts">
+  <meta property="og:description" content="Compare two blocks of text line by line with added/removed highlighting. Private, in-browser.">
+  <meta property="og:url" content="https://a-haz.github.io/test/text-diff/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .diff-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 600px) { .diff-inputs { grid-template-columns: 1fr; } }
+    .diff-out {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.88rem; border: 1px solid var(--border); border-radius: 8px;
+      overflow-x: auto; margin-top: 16px; background: #fcfcfd;
+    }
+    .diff-out .ln { display: flex; white-space: pre-wrap; word-break: break-word; padding: 1px 0; }
+    .diff-out .sign { width: 22px; flex: none; text-align: center; color: var(--muted); user-select: none; }
+    .diff-out .add { background: #e6ffed; }
+    .diff-out .add .sign { color: var(--green); }
+    .diff-out .del { background: #ffeef0; }
+    .diff-out .del .sign { color: var(--red); }
+    .diff-out .txt { flex: 1; padding-right: 10px; }
+    .legend { display: flex; gap: 16px; font-size: 0.85rem; color: var(--muted); margin-top: 10px; flex-wrap: wrap; }
+    .legend span::before { content: ''; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: -1px; }
+    .legend .a::before { background: #e6ffed; border: 1px solid var(--green); }
+    .legend .d::before { background: #ffeef0; border: 1px solid var(--red); }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Text Diff Checker</h1>
+    <p class="tagline">Paste two versions of a text to see exactly what changed — added lines in green, removed lines in red. Everything runs in your browser.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <div class="diff-inputs">
+        <div class="field">
+          <label for="left">Original</label>
+          <textarea class="io" id="left" spellcheck="false" style="min-height:200px;" placeholder="Paste the original text…"></textarea>
+        </div>
+        <div class="field">
+          <label for="right">Changed</label>
+          <textarea class="io" id="right" spellcheck="false" style="min-height:200px;" placeholder="Paste the changed text…"></textarea>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="btn" id="compareBtn">Compare</button>
+        <label class="checkbox-row"><input type="checkbox" id="ignoreCase"> Ignore case</label>
+        <label class="checkbox-row"><input type="checkbox" id="ignoreWs"> Ignore leading/trailing spaces</label>
+        <button class="btn btn-secondary" id="clearBtn">Clear</button>
+      </div>
+      <p class="status" id="summary"></p>
+      <div class="diff-out" id="output"></div>
+      <div class="legend"><span class="a">Added</span><span class="d">Removed</span><span>Unchanged</span></div>
+    </div>
+
+    <div class="content-section">
+      <h2>FAQ</h2>
+      <h3>How does the comparison work?</h3>
+      <p>It splits both texts into lines and computes the longest common subsequence — the standard algorithm behind tools like <code>diff</code> and version-control views. Lines present only in the original are marked removed; lines present only in the changed version are marked added; lines in both stay neutral.</p>
+      <h3>Can it compare code?</h3>
+      <p>Yes — it's line-based, so it works well for source code, config files, CSV and prose alike. For very large inputs (many thousands of lines) it may take a moment, since exact line diffing is computationally heavier than a naive comparison.</p>
+      <h3>Is my text uploaded anywhere?</h3>
+      <p>No. The diff is computed entirely in your browser on a static page; nothing you paste is transmitted or stored.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../json-formatter/">🪄 JSON Formatter</a>
+        <a href="../case-converter/">🔤 Case Converter</a>
+        <a href="../word-counter/">📝 Word Counter</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  function norm(line) {
+    var s = line;
+    if (document.getElementById('ignoreWs').checked) s = s.replace(/^\s+|\s+$/g, '');
+    if (document.getElementById('ignoreCase').checked) s = s.toLowerCase();
+    return s;
+  }
+
+  // Longest common subsequence on lines, then walk back to build the diff.
+  function diff(a, b) {
+    var an = a.map(norm), bn = b.map(norm);
+    var n = a.length, m = b.length;
+    // DP table (n+1) x (m+1)
+    var dp = [];
+    for (var i = 0; i <= n; i++) dp.push(new Int32Array(m + 1));
+    for (i = n - 1; i >= 0; i--) {
+      for (var j = m - 1; j >= 0; j--) {
+        dp[i][j] = an[i] === bn[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+      }
+    }
+    var out = [];
+    i = 0; j = 0;
+    while (i < n && j < m) {
+      if (an[i] === bn[j]) { out.push({ t: 'eq', s: a[i] }); i++; j++; }
+      else if (dp[i + 1][j] >= dp[i][j + 1]) { out.push({ t: 'del', s: a[i] }); i++; }
+      else { out.push({ t: 'add', s: b[j] }); j++; }
+    }
+    while (i < n) { out.push({ t: 'del', s: a[i++] }); }
+    while (j < m) { out.push({ t: 'add', s: b[j++] }); }
+    return out;
+  }
+
+  function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function run() {
+    var a = document.getElementById('left').value.split('\n');
+    var b = document.getElementById('right').value.split('\n');
+    var result = diff(a, b);
+    var added = 0, removed = 0;
+    var html = result.map(function (r) {
+      var cls = r.t === 'add' ? 'add' : r.t === 'del' ? 'del' : '';
+      var sign = r.t === 'add' ? '+' : r.t === 'del' ? '−' : '';
+      if (r.t === 'add') added++;
+      if (r.t === 'del') removed++;
+      return '<div class="ln ' + cls + '"><span class="sign">' + sign + '</span><span class="txt">' + esc(r.s) + '</span></div>';
+    }).join('');
+    document.getElementById('output').innerHTML = html || '<div class="ln"><span class="txt" style="padding:8px; color:var(--muted)">Nothing to compare yet.</span></div>';
+    var sum = document.getElementById('summary');
+    if (added === 0 && removed === 0 && (a.join('') || b.join(''))) {
+      sum.className = 'status ok';
+      sum.textContent = '✓ The two texts are identical.';
+    } else {
+      sum.className = 'status';
+      sum.innerHTML = '<span style="color:var(--green)">+' + added + ' added</span> · <span style="color:var(--red)">−' + removed + ' removed</span>';
+    }
+  }
+
+  document.getElementById('compareBtn').addEventListener('click', run);
+  document.getElementById('clearBtn').addEventListener('click', function () {
+    document.getElementById('left').value = '';
+    document.getElementById('right').value = '';
+    document.getElementById('output').innerHTML = '';
+    document.getElementById('summary').textContent = '';
+  });
+})();
+</script>
+
+</body>
+</html>

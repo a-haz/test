@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compound Interest Calculator — Growth With Monthly Contributions</title>
+  <meta name="description" content="Free compound interest calculator with monthly contributions: see your final balance, total interest earned and a year-by-year growth table. Instant, private, in your browser.">
+  <link rel="canonical" href="https://a-haz.github.io/test/compound-interest-calculator/">
+  <meta property="og:title" content="Compound Interest Calculator — With Monthly Contributions">
+  <meta property="og:description" content="Final balance, total interest and year-by-year growth, calculated instantly in your browser.">
+  <meta property="og:url" content="https://a-haz.github.io/test/compound-interest-calculator/">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    table.growth { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-top: 14px; font-variant-numeric: tabular-nums; }
+    table.growth th { text-align: right; padding: 6px 8px; border-bottom: 2px solid var(--border); color: var(--muted); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; }
+    table.growth td { text-align: right; padding: 5px 8px; border-bottom: 1px solid var(--border); }
+    table.growth th:first-child, table.growth td:first-child { text-align: left; }
+    .bar-cell { position: relative; }
+    .bar { position: absolute; left: 0; top: 15%; height: 70%; background: #c7d2fe; border-radius: 3px; z-index: 0; }
+    .bar.interest { background: var(--accent); }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <nav class="site-nav">
+      <a href="../">All Tools</a>
+      <a href="../privacy.html">Privacy</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <h1>Compound Interest Calculator</h1>
+    <p class="tagline">See how a starting amount plus regular monthly contributions grows over time — with the interest-on-interest effect that makes long horizons so powerful.</p>
+
+    <!-- AdSense: paste a responsive ad unit here once approved -->
+
+    <div class="tool-panel">
+      <div class="field-row">
+        <div class="field">
+          <label for="principal">Starting amount</label>
+          <input type="number" id="principal" value="10000" min="0" step="any">
+        </div>
+        <div class="field">
+          <label for="monthly">Monthly contribution</label>
+          <input type="number" id="monthly" value="200" min="0" step="any">
+        </div>
+        <div class="field">
+          <label for="rate">Annual return (%)</label>
+          <input type="number" id="rate" value="7" step="0.01">
+        </div>
+        <div class="field">
+          <label for="years">Years</label>
+          <input type="number" id="years" value="20" min="1" max="80" step="1">
+        </div>
+        <div class="field">
+          <label for="currency">Currency</label>
+          <select id="currency">
+            <option value="$">USD ($)</option>
+            <option value="€">EUR (€)</option>
+            <option value="£">GBP (£)</option>
+            <option value="RM">MYR (RM)</option>
+            <option value="₹">INR (₹)</option>
+            <option value="A$">AUD (A$)</option>
+            <option value="C$">CAD (C$)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat"><span class="num" id="finalBal">—</span><span class="lbl">Final balance</span></div>
+        <div class="stat"><span class="num" id="contributed">—</span><span class="lbl">Total contributed</span></div>
+        <div class="stat"><span class="num" id="interest">—</span><span class="lbl">Interest earned</span></div>
+      </div>
+      <p class="status" id="assumption" style="color:var(--muted);">Interest compounds monthly; contributions are added at the end of each month.</p>
+
+      <div style="overflow-x:auto;">
+        <table class="growth">
+          <thead><tr><th>Year</th><th>Contributed</th><th>Interest</th><th>Balance</th><th style="text-align:left; width:30%;">Growth</th></tr></thead>
+          <tbody id="growthBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="content-section">
+      <h2>Why compounding matters more than the amount</h2>
+      <p>With compound interest, you earn returns on your past returns. In the early years that's barely visible — the curve looks flat. But each year's interest joins the principal for every following year, so growth accelerates: in the table above, watch how the interest column eventually outgrows your own contributions. This is why starting ten years earlier routinely beats contributing twice as much later.</p>
+
+      <h2>FAQ</h2>
+      <h3>What annual return should I assume?</h3>
+      <p>That's your call, not ours — but for reference, broad stock-market index funds have historically averaged about 7–10% per year over long periods before inflation (with brutal swings along the way), while high-yield savings accounts track central-bank rates. Use a conservative number for planning; nobody is guaranteed past averages.</p>
+      <h3>How does the math work?</h3>
+      <p>The balance grows by the monthly rate (annual ÷ 12) each month, then the contribution is added. The closed-form is FV = P(1+i)ⁿ + C·((1+i)ⁿ − 1)/i, where i is the monthly rate and n the number of months — this calculator simulates month-by-month, which matches that formula.</p>
+      <h3>Does this account for inflation or taxes?</h3>
+      <p>No — results are nominal and pre-tax. A quick way to think in today's money: subtract expected inflation from your return assumption (e.g. use 4% instead of 7% with 3% inflation).</p>
+      <h3>Is my financial data sent anywhere?</h3>
+      <p>No. The simulation runs entirely in your browser on a static page.</p>
+
+      <h2>More tools</h2>
+      <div class="related">
+        <a href="../loan-calculator/">🏦 Loan Calculator</a>
+        <a href="../salary-converter/">💰 Salary Converter</a>
+        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var ids = ['principal', 'monthly', 'rate', 'years', 'currency'];
+
+  function fmt(n, cur) {
+    return cur + ' ' + n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  function calc() {
+    var P = parseFloat(document.getElementById('principal').value) || 0;
+    var C = parseFloat(document.getElementById('monthly').value) || 0;
+    var annual = parseFloat(document.getElementById('rate').value);
+    var years = parseInt(document.getElementById('years').value, 10);
+    var cur = document.getElementById('currency').value;
+
+    var body = document.getElementById('growthBody');
+    if (isNaN(annual) || !(years > 0) || (P <= 0 && C <= 0)) {
+      ['finalBal', 'contributed', 'interest'].forEach(function (id) {
+        document.getElementById(id).textContent = '—';
+      });
+      body.innerHTML = '';
+      return;
+    }
+    years = Math.min(years, 80);
+
+    var i = annual / 100 / 12;
+    var bal = P;
+    var contributed = P;
+    var rows = [];
+    var maxBal = 0;
+
+    for (var y = 1; y <= years; y++) {
+      for (var m = 0; m < 12; m++) {
+        bal = bal * (1 + i) + C;
+        contributed += C;
+      }
+      rows.push({ y: y, c: contributed, int: bal - contributed, b: bal });
+      if (bal > maxBal) maxBal = bal;
+    }
+
+    document.getElementById('finalBal').textContent = fmt(bal, cur);
+    document.getElementById('contributed').textContent = fmt(contributed, cur);
+    document.getElementById('interest').textContent = fmt(bal - contributed, cur);
+
+    body.innerHTML = rows.map(function (r) {
+      var contribPct = maxBal > 0 ? Math.max(0, r.c / maxBal * 100) : 0;
+      var intPct = maxBal > 0 ? Math.max(0, r.int / maxBal * 100) : 0;
+      return '<tr><td>' + r.y + '</td><td>' + fmt(r.c, cur) + '</td><td>' + fmt(r.int, cur) +
+        '</td><td><strong>' + fmt(r.b, cur) + '</strong></td>' +
+        '<td class="bar-cell"><span class="bar" style="width:' + contribPct.toFixed(1) + '%"></span>' +
+        '<span class="bar interest" style="left:' + contribPct.toFixed(1) + '%; width:' + intPct.toFixed(1) + '%"></span></td></tr>';
+    }).join('');
+  }
+
+  ids.forEach(function (id) {
+    var el = document.getElementById(id);
+    el.addEventListener('input', calc);
+    el.addEventListener('change', calc);
+  });
+  calc();
+})();
+</script>
+
+</body>
+</html>
