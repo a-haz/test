@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Percentage Calculator — % of a Number, Percent Change &amp; More</title>
+  <title>Percentage Calculator: % of a Number, Percent Change &amp; More</title>
   <meta name="description" content="Free percentage calculator: find X% of a number, work out what percent X is of Y, and calculate percentage increase or decrease. Instant results, no sign-up.">
   <link rel="canonical" href="https://a-haz.github.io/test/percentage-calculator/">
-  <meta property="og:title" content="Percentage Calculator — Fast &amp; Free">
-  <meta property="og:description" content="X% of Y, X as a percent of Y, and percent change — solved instantly in your browser.">
+  <meta property="og:title" content="Percentage Calculator: Fast &amp; Free">
+  <meta property="og:description" content="X% of Y, X as a percent of Y, and percent change, solved instantly in your browser.">
   <meta property="og:url" content="https://a-haz.github.io/test/percentage-calculator/">
   <meta property="og:type" content="website">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
@@ -22,7 +22,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <a class="brand" href="../">Quick<span>Tools</span></a>
     <nav class="site-nav">
       <a href="../">All Tools</a>
       <a href="../privacy.html">Privacy</a>
@@ -44,7 +44,7 @@
         What is <input type="number" id="a1" step="any" placeholder="15"> % of
         <input type="number" id="a2" step="any" placeholder="200"> ?
       </div>
-      <div class="result-box" id="r1">—</div>
+      <div class="result-box" id="r1">-</div>
     </div>
 
     <div class="tool-panel calc">
@@ -53,7 +53,7 @@
         <input type="number" id="b1" step="any" placeholder="30"> is what % of
         <input type="number" id="b2" step="any" placeholder="200"> ?
       </div>
-      <div class="result-box" id="r2">—</div>
+      <div class="result-box" id="r2">-</div>
     </div>
 
     <div class="tool-panel calc">
@@ -62,7 +62,7 @@
         From <input type="number" id="c1" step="any" placeholder="50"> to
         <input type="number" id="c2" step="any" placeholder="65"> is what % change?
       </div>
-      <div class="result-box" id="r3">—</div>
+      <div class="result-box" id="r3">-</div>
     </div>
 
     <div class="content-section">
@@ -83,9 +83,9 @@
 
       <h2>More tools</h2>
       <div class="related">
-        <a href="../loan-calculator/">🏦 Loan Calculator</a>
-        <a href="../salary-converter/">💰 Salary Converter</a>
-        <a href="../invoice-generator/">🧾 Invoice Generator</a>
+        <a href="../loan-calculator/">Loan Calculator</a>
+        <a href="../salary-converter/">Salary Converter</a>
+        <a href="../invoice-generator/">Invoice Generator</a>
       </div>
     </div>
 
@@ -94,7 +94,7 @@
 
 <footer class="site-footer">
   <div class="container">
-    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+    <p><a href="../">QuickTools</a>: free browser-based tools. <a href="../privacy.html">Privacy</a></p>
   </div>
 </footer>
 
@@ -114,13 +114,13 @@
     document.getElementById('r1').innerHTML =
       (a1 !== null && a2 !== null)
         ? a1 + '% of ' + fmt(a2) + ' = <strong>' + fmt(a2 * a1 / 100) + '</strong>'
-        : '—';
+        : '-';
 
     var b1 = val('b1'), b2 = val('b2');
     document.getElementById('r2').innerHTML =
       (b1 !== null && b2 !== null && b2 !== 0)
         ? fmt(b1) + ' is <strong>' + fmt(b1 / b2 * 100) + '%</strong> of ' + fmt(b2)
-        : '—';
+        : '-';
 
     var c1 = val('c1'), c2 = val('c2');
     if (c1 !== null && c2 !== null && c1 !== 0) {
@@ -129,7 +129,7 @@
       document.getElementById('r3').innerHTML =
         fmt(c1) + ' → ' + fmt(c2) + ' = <strong>' + (ch > 0 ? '+' : '') + fmt(ch) + '%</strong> ' + dir;
     } else {
-      document.getElementById('r3').textContent = '—';
+      document.getElementById('r3').textContent = '-';
     }
   }
 

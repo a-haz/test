@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BMI Calculator — Body Mass Index in Metric or Imperial Units</title>
-  <meta name="description" content="Free BMI calculator with metric (kg/cm) and imperial (lb/ft) units. Get your body mass index, WHO category and healthy weight range for your height — instantly and privately.">
+  <title>BMI Calculator: Body Mass Index in Metric or Imperial Units</title>
+  <meta name="description" content="Free BMI calculator with metric (kg/cm) and imperial (lb/ft) units. Get your body mass index, WHO category and healthy weight range for your height, instantly and privately.">
   <link rel="canonical" href="https://a-haz.github.io/test/bmi-calculator/">
-  <meta property="og:title" content="BMI Calculator — Metric &amp; Imperial">
+  <meta property="og:title" content="BMI Calculator: Metric &amp; Imperial">
   <meta property="og:description" content="Body mass index, WHO category and healthy weight range, calculated in your browser.">
   <meta property="og:url" content="https://a-haz.github.io/test/bmi-calculator/">
   <meta property="og:type" content="website">
@@ -25,7 +25,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <a class="brand" href="../">Quick<span>Tools</span></a>
     <nav class="site-nav">
       <a href="../">All Tools</a>
       <a href="../privacy.html">Privacy</a>
@@ -37,7 +37,7 @@
   <div class="container">
 
     <h1>BMI Calculator</h1>
-    <p class="tagline">Body mass index from your height and weight, in metric or imperial units. Calculated locally — your measurements are never sent anywhere.</p>
+    <p class="tagline">Body mass index from your height and weight, in metric or imperial units. Calculated locally: your measurements are never sent anywhere.</p>
 
     <!-- AdSense: paste a responsive ad unit here once approved -->
 
@@ -76,8 +76,8 @@
       </div>
 
       <div class="stat-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
-        <div class="stat"><span class="num" id="bmiVal">—</span><span class="lbl">Your BMI</span></div>
-        <div class="stat"><span class="num" id="healthyRange" style="font-size:1.1rem;">—</span><span class="lbl">Healthy weight for your height</span></div>
+        <div class="stat"><span class="num" id="bmiVal">-</span><span class="lbl">Your BMI</span></div>
+        <div class="stat"><span class="num" id="healthyRange" style="font-size:1.1rem;">-</span><span class="lbl">Healthy weight for your height</span></div>
       </div>
       <p class="bmi-cat" id="bmiCat"></p>
 
@@ -95,19 +95,19 @@
 
       <h2>FAQ</h2>
       <h3>Is BMI accurate for everyone?</h3>
-      <p>No — it's a screening tool, not a diagnosis. It can't tell muscle from fat, so muscular athletes often score "overweight" while being very lean, and it can understate body fat in older adults. Waist circumference and body-fat percentage give a fuller picture. For any health decision, talk to a medical professional.</p>
+      <p>No, it's a screening tool, not a diagnosis. It can't tell muscle from fat, so muscular athletes often score "overweight" while being very lean, and it can understate body fat in older adults. Waist circumference and body-fat percentage give a fuller picture. For any health decision, talk to a medical professional.</p>
       <h3>How is BMI calculated in imperial units?</h3>
       <p>BMI = 703 × weight (lb) ÷ height (in)². The 703 factor converts the result to the same kg/m² scale as the metric formula.</p>
       <h3>What does the healthy weight range mean?</h3>
-      <p>It's the weight span that would put your BMI between 18.5 and 24.9 at your height — a reference range, not a personal target. Individual healthy weights vary with build, age and muscle mass.</p>
+      <p>It's the weight span that would put your BMI between 18.5 and 24.9 at your height: a reference range, not a personal target. Individual healthy weights vary with build, age and muscle mass.</p>
       <h3>Is my data private?</h3>
       <p>Completely. The calculation runs in your browser on a static page; your height and weight are never transmitted or stored.</p>
 
       <h2>More tools</h2>
       <div class="related">
-        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
-        <a href="../salary-converter/">💰 Salary Converter</a>
-        <a href="../word-counter/">📝 Word Counter</a>
+        <a href="../percentage-calculator/">Percentage Calculator</a>
+        <a href="../salary-converter/">Salary Converter</a>
+        <a href="../word-counter/">Word Counter</a>
       </div>
     </div>
 
@@ -116,7 +116,7 @@
 
 <footer class="site-footer">
   <div class="container">
-    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+    <p><a href="../">QuickTools</a>: free browser-based tools. <a href="../privacy.html">Privacy</a></p>
   </div>
 </footer>
 
@@ -162,9 +162,9 @@
     var rangeEl = document.getElementById('healthyRange');
 
     if (!meters || !kg || kg <= 0) {
-      valEl.textContent = '—';
+      valEl.textContent = '-';
       catEl.textContent = '';
-      rangeEl.textContent = '—';
+      rangeEl.textContent = '-';
       return;
     }
 

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JSON Formatter &amp; Validator — Pretty-Print and Minify JSON Online</title>
+  <title>JSON Formatter &amp; Validator: Pretty-Print and Minify JSON Online</title>
   <meta name="description" content="Free online JSON formatter, validator and minifier. Pretty-print JSON with 2 or 4 spaces, find syntax errors with exact line and column, all locally in your browser.">
   <link rel="canonical" href="https://a-haz.github.io/test/json-formatter/">
-  <meta property="og:title" content="JSON Formatter &amp; Validator — Free, Private, In-Browser">
+  <meta property="og:title" content="JSON Formatter &amp; Validator: Free, Private, In-Browser">
   <meta property="og:description" content="Pretty-print, minify and validate JSON with exact error locations. Your JSON never leaves your device.">
   <meta property="og:url" content="https://a-haz.github.io/test/json-formatter/">
   <meta property="og:type" content="website">
@@ -17,7 +17,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <a class="brand" href="../">Quick<span>Tools</span></a>
     <nav class="site-nav">
       <a href="../">All Tools</a>
       <a href="../privacy.html">Privacy</a>
@@ -29,7 +29,7 @@
   <div class="container">
 
     <h1>JSON Formatter &amp; Validator</h1>
-    <p class="tagline">Paste JSON below to pretty-print, minify or validate it. Errors are reported with the exact line and column. Everything runs in your browser — your data is never uploaded.</p>
+    <p class="tagline">Paste JSON below to pretty-print, minify or validate it. Errors are reported with the exact line and column. Everything runs in your browser: your data is never uploaded.</p>
 
     <!-- AdSense: paste a responsive ad unit here once approved -->
 
@@ -57,7 +57,7 @@
     <div class="content-section">
       <h2>FAQ</h2>
       <h3>Is it safe to paste sensitive JSON here?</h3>
-      <p>Yes. This page is a static file with no backend — parsing and formatting happen entirely in your browser using the built-in <code>JSON.parse</code> and <code>JSON.stringify</code>. Nothing is transmitted anywhere. You can even load the page, disconnect from the internet, and it still works.</p>
+      <p>Yes. This page is a static file with no backend: parsing and formatting happen entirely in your browser using the built-in <code>JSON.parse</code> and <code>JSON.stringify</code>. Nothing is transmitted anywhere. You can even load the page, disconnect from the internet, and it still works.</p>
       <h3>Why is my JSON invalid?</h3>
       <p>The most common causes: trailing commas after the last item, single quotes instead of double quotes, unquoted property names, and comments (standard JSON doesn't allow them). The validator above points you at the exact line and column of the first problem.</p>
       <h3>What's the difference between Format and Minify?</h3>
@@ -67,9 +67,9 @@
 
       <h2>More tools</h2>
       <div class="related">
-        <a href="../base64/">🔁 Base64 Encode/Decode</a>
-        <a href="../word-counter/">📝 Word Counter</a>
-        <a href="../password-generator/">🔐 Password Generator</a>
+        <a href="../base64/">Base64 Encode/Decode</a>
+        <a href="../word-counter/">Word Counter</a>
+        <a href="../password-generator/">Password Generator</a>
       </div>
     </div>
 
@@ -78,7 +78,7 @@
 
 <footer class="site-footer">
   <div class="container">
-    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+    <p><a href="../">QuickTools</a>: free browser-based tools. <a href="../privacy.html">Privacy</a></p>
   </div>
 </footer>
 
@@ -127,14 +127,14 @@
     var r = parseOrReport();
     if (!r) return;
     output.value = JSON.stringify(r.data, null, indentValue());
-    setStatus('✓ Valid JSON — formatted.', true);
+    setStatus('✓ Valid JSON, formatted.', true);
   });
 
   document.getElementById('minifyBtn').addEventListener('click', function () {
     var r = parseOrReport();
     if (!r) return;
     output.value = JSON.stringify(r.data);
-    setStatus('✓ Valid JSON — minified (' + output.value.length.toLocaleString() + ' chars).', true);
+    setStatus('✓ Valid JSON, minified (' + output.value.length.toLocaleString() + ' chars).', true);
   });
 
   document.getElementById('validateBtn').addEventListener('click', function () {
@@ -163,7 +163,7 @@
       tools: ['json-formatter', 'invoice-generator', 'password-generator'],
       stats: { backend: null, trackers: 0 }
     });
-    setStatus('Sample loaded — try Format.', true);
+    setStatus('Sample loaded, try Format.', true);
   });
 })();
 </script>

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Age Calculator — Your Exact Age in Years, Months &amp; Days</title>
+  <title>Age Calculator: Your Exact Age in Years, Months &amp; Days</title>
   <meta name="description" content="Calculate your exact age in years, months and days from your date of birth, plus total days, hours and your next birthday countdown. Free, private, in your browser.">
   <link rel="canonical" href="https://a-haz.github.io/test/age-calculator/">
-  <meta property="og:title" content="Age Calculator — Exact Age &amp; Next Birthday">
+  <meta property="og:title" content="Age Calculator: Exact Age &amp; Next Birthday">
   <meta property="og:description" content="Your exact age in years, months and days plus a next-birthday countdown, calculated in your browser.">
   <meta property="og:url" content="https://a-haz.github.io/test/age-calculator/">
   <meta property="og:type" content="website">
@@ -17,7 +17,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <a class="brand" href="../">Quick<span>Tools</span></a>
     <nav class="site-nav">
       <a href="../">All Tools</a>
       <a href="../privacy.html">Privacy</a>
@@ -29,7 +29,7 @@
   <div class="container">
 
     <h1>Age Calculator</h1>
-    <p class="tagline">Enter a date of birth to get the exact age in years, months and days — plus totals and a countdown to the next birthday.</p>
+    <p class="tagline">Enter a date of birth to get the exact age in years, months and days, plus totals and a countdown to the next birthday.</p>
 
     <!-- AdSense: paste a responsive ad unit here once approved -->
 
@@ -48,10 +48,10 @@
       <div class="result-box" id="mainAge" style="font-size:1.3rem;">Pick a date of birth above.</div>
 
       <div class="stat-grid" style="margin-top:16px;">
-        <div class="stat"><span class="num" id="totalMonths">—</span><span class="lbl">Total months</span></div>
-        <div class="stat"><span class="num" id="totalWeeks">—</span><span class="lbl">Total weeks</span></div>
-        <div class="stat"><span class="num" id="totalDays">—</span><span class="lbl">Total days</span></div>
-        <div class="stat"><span class="num" id="totalHours">—</span><span class="lbl">Total hours</span></div>
+        <div class="stat"><span class="num" id="totalMonths">-</span><span class="lbl">Total months</span></div>
+        <div class="stat"><span class="num" id="totalWeeks">-</span><span class="lbl">Total weeks</span></div>
+        <div class="stat"><span class="num" id="totalDays">-</span><span class="lbl">Total days</span></div>
+        <div class="stat"><span class="num" id="totalHours">-</span><span class="lbl">Total hours</span></div>
       </div>
       <p class="status ok" id="nextBday" style="margin-top:14px;"></p>
     </div>
@@ -59,19 +59,19 @@
     <div class="content-section">
       <h2>FAQ</h2>
       <h3>How is age calculated exactly?</h3>
-      <p>It counts complete years from your birth date, then complete months, then leftover days — the same way you'd say "32 years, 4 months and 9 days". Month lengths and leap years are handled correctly by borrowing the actual number of days in the preceding month, so the result always matches the calendar.</p>
+      <p>It counts complete years from your birth date, then complete months, then leftover days: the same way you'd say "32 years, 4 months and 9 days". Month lengths and leap years are handled correctly by borrowing the actual number of days in the preceding month, so the result always matches the calendar.</p>
       <h3>Why might this differ from a quick "today minus birth year"?</h3>
       <p>Subtracting years alone ignores whether your birthday has happened yet this year. This tool checks the month and day, so someone born in December isn't counted a year older until December.</p>
       <h3>Can I find my age on a past or future date?</h3>
-      <p>Yes — set the "Age at date" field to any date to see how old you were (or will be) then. Leave it blank to use today.</p>
+      <p>Yes, set the "Age at date" field to any date to see how old you were (or will be) then. Leave it blank to use today.</p>
       <h3>Is my birth date stored anywhere?</h3>
       <p>No. Everything is computed in your browser; nothing is transmitted or saved.</p>
 
       <h2>More tools</h2>
       <div class="related">
-        <a href="../timestamp-converter/">⏱ Timestamp Converter</a>
-        <a href="../bmi-calculator/">⚖️ BMI Calculator</a>
-        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
+        <a href="../timestamp-converter/">Timestamp Converter</a>
+        <a href="../bmi-calculator/">BMI Calculator</a>
+        <a href="../percentage-calculator/">Percentage Calculator</a>
       </div>
     </div>
 
@@ -80,7 +80,7 @@
 
 <footer class="site-footer">
   <div class="container">
-    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+    <p><a href="../">QuickTools</a>: free browser-based tools. <a href="../privacy.html">Privacy</a></p>
   </div>
 </footer>
 
@@ -95,7 +95,7 @@
     if (!dob.value) {
       document.getElementById('mainAge').textContent = 'Pick a date of birth above.';
       ['totalMonths', 'totalWeeks', 'totalDays', 'totalHours'].forEach(function (id) {
-        document.getElementById(id).textContent = '—';
+        document.getElementById(id).textContent = '-';
       });
       document.getElementById('nextBday').textContent = '';
       return;
@@ -138,10 +138,10 @@
     if (next < now || next.getTime() === now.getTime()) next.setFullYear(now.getFullYear() + 1);
     var daysToNext = Math.ceil((next - now) / 86400000);
     if (daysToNext === 0) {
-      document.getElementById('nextBday').textContent = '🎉 Happy birthday — that date is today!';
+      document.getElementById('nextBday').textContent = 'Happy birthday! That date is today.';
     } else {
       document.getElementById('nextBday').textContent =
-        '🎂 Next birthday in ' + daysToNext + ' day' + (daysToNext === 1 ? '' : 's') +
+        'Next birthday in ' + daysToNext + ' day' + (daysToNext === 1 ? '' : 's') +
         ' (' + next.toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) + ').';
     }
   }

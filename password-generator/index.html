@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Secure Password Generator — Random Passwords in Your Browser</title>
-  <meta name="description" content="Generate cryptographically secure random passwords with custom length and character sets. Runs entirely in your browser using the Web Crypto API — passwords are never transmitted.">
+  <title>Secure Password Generator: Random Passwords in Your Browser</title>
+  <meta name="description" content="Generate cryptographically secure random passwords with custom length and character sets. Runs entirely in your browser using the Web Crypto API: passwords are never transmitted.">
   <link rel="canonical" href="https://a-haz.github.io/test/password-generator/">
-  <meta property="og:title" content="Secure Password Generator — Free &amp; Private">
+  <meta property="og:title" content="Secure Password Generator: Free &amp; Private">
   <meta property="og:description" content="Strong random passwords generated locally with the Web Crypto API. Nothing ever leaves your device.">
   <meta property="og:url" content="https://a-haz.github.io/test/password-generator/">
   <meta property="og:type" content="website">
@@ -32,7 +32,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <a class="brand" href="../">Quick<span>Tools</span></a>
     <nav class="site-nav">
       <a href="../">All Tools</a>
       <a href="../privacy.html">Privacy</a>
@@ -51,7 +51,7 @@
     <div class="tool-panel">
       <div class="pw-display">
         <code id="pw">…</code>
-        <button class="btn btn-secondary" id="copyBtn" title="Copy password">📋 Copy</button>
+        <button class="btn btn-secondary" id="copyBtn" title="Copy password">Copy</button>
       </div>
 
       <div class="controls">
@@ -76,19 +76,19 @@
     <div class="content-section">
       <h2>FAQ</h2>
       <h3>How are these passwords generated?</h3>
-      <p>With <code>crypto.getRandomValues()</code>, the browser's cryptographically secure random number generator — the same class of randomness used for encryption keys. Rejection sampling is used so every character in the pool is exactly equally likely (a plain <code>Math.random()</code> or naive modulo would introduce bias).</p>
+      <p>With <code>crypto.getRandomValues()</code>, the browser's cryptographically secure random number generator: the same class of randomness used for encryption keys. Rejection sampling is used so every character in the pool is exactly equally likely (a plain <code>Math.random()</code> or naive modulo would introduce bias).</p>
       <h3>Can anyone see the passwords I generate?</h3>
       <p>No. This is a static page with no backend, no analytics and no network requests after load. Generated passwords exist only in your browser's memory and are gone when you leave the page.</p>
       <h3>How long should a password be?</h3>
-      <p>For anything important, 16+ characters with all character sets enabled — that's roughly 100+ bits of entropy, far beyond brute-force range. The real best practice: use a password manager so every account gets a unique random password, and enable two-factor authentication where offered.</p>
+      <p>For anything important, 16+ characters with all character sets enabled: that's roughly 100+ bits of entropy, far beyond brute-force range. The real best practice: use a password manager so every account gets a unique random password, and enable two-factor authentication where offered.</p>
       <h3>What does the strength meter measure?</h3>
-      <p>Entropy in bits: length × log₂(pool size). 60+ bits is reasonable, 80+ is strong, 100+ is excellent. It assumes a truly random password — human-invented passwords are far weaker than their length suggests.</p>
+      <p>Entropy in bits: length × log₂(pool size). 60+ bits is reasonable, 80+ is strong, 100+ is excellent. It assumes a truly random password: human-invented passwords are far weaker than their length suggests.</p>
 
       <h2>More tools</h2>
       <div class="related">
-        <a href="../base64/">🔁 Base64 Encode/Decode</a>
-        <a href="../json-formatter/">🪄 JSON Formatter</a>
-        <a href="../invoice-generator/">🧾 Invoice Generator</a>
+        <a href="../base64/">Base64 Encode/Decode</a>
+        <a href="../json-formatter/">JSON Formatter</a>
+        <a href="../invoice-generator/">Invoice Generator</a>
       </div>
     </div>
 
@@ -97,7 +97,7 @@
 
 <footer class="site-footer">
   <div class="container">
-    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+    <p><a href="../">QuickTools</a>: free browser-based tools. <a href="../privacy.html">Privacy</a></p>
   </div>
 </footer>
 
@@ -155,7 +155,7 @@
     bar.style.width = Math.min(100, bits / 1.28) + '%';
     bar.style.background = color;
     document.getElementById('meterLabel').textContent =
-      bits ? label + ' — about ' + Math.round(bits) + ' bits of entropy' : '';
+      bits ? label + ', about ' + Math.round(bits) + ' bits of entropy' : '';
   }
 
   document.getElementById('genBtn').addEventListener('click', generate);

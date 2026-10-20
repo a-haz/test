@@ -1,87 +1,62 @@
-# ⚡ QuickTools
+# QuickTools
 
-A fast, free suite of browser-based tools, hosted on GitHub Pages:
-**https://a-haz.github.io/test/**
+A set of small browser tools, hosted on GitHub Pages at
+https://a-haz.github.io/test/
 
-Every tool is a single static HTML page — no backend, no build step, no
-frameworks, no trackers. All processing happens client-side, so user data
-never leaves the browser.
+Each tool is one static HTML page with inline JavaScript and a shared
+`style.css`. There is no backend and no build step, and input is processed in
+the browser, not sent to a server.
 
 ## Tools
 
-| Tool | Path | Search intent |
-|---|---|---|
-| 🧾 Invoice Generator | `/invoice-generator/` | "free invoice generator" — high commercial intent |
-| 🖼️ Image Compressor & Resizer | `/image-compressor/` | "compress image" — huge volume; privacy angle is the differentiator |
-| 📱 QR Code Generator | `/qr-code-generator/` | "qr code generator free" — huge volume; "never expires" is the hook |
-| 🏦 Loan Calculator | `/loan-calculator/` | "loan calculator" — finance niche, top-tier ad CPC |
-| ⚖️ BMI Calculator | `/bmi-calculator/` | "bmi calculator" — health niche, high volume + CPC |
-| 💰 Salary Converter | `/salary-converter/` | "hourly to salary" — finance niche |
-| 📈 Compound Interest Calculator | `/compound-interest-calculator/` | "compound interest calculator" — finance niche, top CPC |
-| 🏷️ Discount & Tip Calculator | `/discount-calculator/` | "discount calculator", "tip calculator" |
-| 📐 Unit Converter | `/unit-converter/` | "unit converter", "cm to inches" etc. — huge volume |
-| 🎂 Age Calculator | `/age-calculator/` | "age calculator" — high volume |
-| 🪄 JSON Formatter & Validator | `/json-formatter/` | "json formatter", "json validator" |
-| 🔐 Password Generator | `/password-generator/` | "password generator" |
-| #️⃣ Hash Generator | `/hash-generator/` | "sha256 generator", "sha512 hash" |
-| 🔍 Text Diff Checker | `/text-diff/` | "text diff", "compare two texts" |
-| 📝 Word Counter | `/word-counter/` | "word counter", "character count" |
-| 🔁 Base64 Encode/Decode | `/base64/` | "base64 decode" |
-| 📊 Percentage Calculator | `/percentage-calculator/` | "percentage calculator" |
-| ⏱ Timestamp Converter | `/timestamp-converter/` | "unix timestamp converter", "epoch converter" |
-| 🔤 Case Converter | `/case-converter/` | "case converter", "title case converter" |
-
-### Guides (`/guides/`)
-
-Informational articles that target "how-to" searches and funnel readers
-into the matching tool with in-content calls to action:
-
-| Guide | Funnels to |
+| Tool | Path |
 |---|---|
-| How to Write an Invoice | Invoice Generator |
-| How to Compress Images for Email | Image Compressor |
+| Invoice generator (print or save as PDF) | `/invoice-generator/` |
+| Image compressor and resizer | `/image-compressor/` |
+| QR code generator | `/qr-code-generator/` |
+| Loan calculator with amortization table | `/loan-calculator/` |
+| BMI calculator | `/bmi-calculator/` |
+| Salary converter (hourly, monthly, yearly) | `/salary-converter/` |
+| Compound interest calculator | `/compound-interest-calculator/` |
+| Discount and tip calculator | `/discount-calculator/` |
+| Unit converter | `/unit-converter/` |
+| Age calculator | `/age-calculator/` |
+| JSON formatter and validator | `/json-formatter/` |
+| Password generator | `/password-generator/` |
+| Hash generator (SHA-1, SHA-256, SHA-384, SHA-512) | `/hash-generator/` |
+| Text diff | `/text-diff/` |
+| Word counter | `/word-counter/` |
+| Base64 encode and decode | `/base64/` |
+| Percentage calculator | `/percentage-calculator/` |
+| Unix timestamp converter | `/timestamp-converter/` |
+| Case converter | `/case-converter/` |
 
-The QR tool bundles the MIT-licensed
-[qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator)
-library (vendored at `qr-code-generator/qrcode.js`); everything else is
-hand-written vanilla JS. Hashing uses the native Web Crypto `SubtleCrypto`
-API (SHA family only — MD5 is intentionally omitted as browsers don't
-provide it and it's broken).
+There are also two short guides under `/guides/` (writing an invoice,
+compressing images for email), plus `privacy.html`, `404.html`, `sitemap.xml`
+and `robots.txt`.
 
-Plus: `privacy.html`, `404.html`, `sitemap.xml`, `robots.txt`.
+## Notes
 
-## How to monetize this site
+- The QR tool uses the MIT-licensed
+  [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) library,
+  vendored at `qr-code-generator/qrcode.js`. Everything else is plain
+  JavaScript.
+- Hashing uses the browser's Web Crypto API, which only supports the SHA family,
+  so there is no MD5.
+- The password generator uses `crypto.getRandomValues()`.
+- Tool pages have an HTML comment marking where an ad unit could go. No ads are
+  running.
 
-1. **Get traffic first.** Submit the sitemap in [Google Search Console](https://search.google.com/search-console)
-   and Bing Webmaster Tools. Share individual tools where they're useful
-   (the invoice generator in freelancer communities, the JSON formatter in dev
-   threads). Rankings for tool keywords take months — patience required.
-2. **Buy a custom domain (~$10/yr) before applying for ads.**
-   Google AdSense does **not** accept `*.github.io` subdomains — you must
-   serve the site from a domain you own. Point it at GitHub Pages
-   (Settings → Pages → Custom domain), update the `canonical` URLs,
-   `sitemap.xml` and `robots.txt`, then apply.
-3. **Add the ad units.** Each tool page contains an
-   `<!-- AdSense: paste a responsive ad unit here once approved -->` comment
-   marking a sensible placement. Update `privacy.html` when ads go live —
-   AdSense requires the policy to disclose it.
-4. **Alternatives that work without AdSense:** [EthicalAds](https://www.ethicalads.io/)
-   or [Carbon Ads](https://www.carbonads.net/) for dev-audience pages,
-   affiliate links (e.g. accounting/invoicing software on the invoice page,
-   password managers on the password page), or a "Buy me a coffee" link.
+## Adding a tool
 
-## Adding a new tool
+Copy an existing tool folder (for example `word-counter/`), keep the header and
+footer markup, write the page and its script, set a unique `<title>`, meta
+description and canonical URL, then add it to `index.html`, the footer link
+lists and `sitemap.xml`.
 
-Copy any tool folder (e.g. `word-counter/`), keep the header/footer markup,
-write the tool UI + inline script, give it a unique `<title>`,
-`meta description` and `canonical` URL, then add it to `index.html`,
-the footer lists and `sitemap.xml`.
-
-## Local preview
+## Running locally
 
 ```sh
 python3 -m http.server 8000
-# open http://localhost:8000
+# then open http://localhost:8000
 ```
-
-No build step needed — it's plain HTML/CSS/JS.

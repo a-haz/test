@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Compound Interest Calculator — Growth With Monthly Contributions</title>
+  <title>Compound Interest Calculator: Growth With Monthly Contributions</title>
   <meta name="description" content="Free compound interest calculator with monthly contributions: see your final balance, total interest earned and a year-by-year growth table. Instant, private, in your browser.">
   <link rel="canonical" href="https://a-haz.github.io/test/compound-interest-calculator/">
-  <meta property="og:title" content="Compound Interest Calculator — With Monthly Contributions">
+  <meta property="og:title" content="Compound Interest Calculator: With Monthly Contributions">
   <meta property="og:description" content="Final balance, total interest and year-by-year growth, calculated instantly in your browser.">
   <meta property="og:url" content="https://a-haz.github.io/test/compound-interest-calculator/">
   <meta property="og:type" content="website">
@@ -26,7 +26,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <a class="brand" href="../">Quick<span>Tools</span></a>
     <nav class="site-nav">
       <a href="../">All Tools</a>
       <a href="../privacy.html">Privacy</a>
@@ -38,7 +38,7 @@
   <div class="container">
 
     <h1>Compound Interest Calculator</h1>
-    <p class="tagline">See how a starting amount plus regular monthly contributions grows over time — with the interest-on-interest effect that makes long horizons so powerful.</p>
+    <p class="tagline">See how a starting amount plus regular monthly contributions grows over time, with the interest-on-interest effect that makes long horizons so powerful.</p>
 
     <!-- AdSense: paste a responsive ad unit here once approved -->
 
@@ -75,9 +75,9 @@
       </div>
 
       <div class="stat-grid">
-        <div class="stat"><span class="num" id="finalBal">—</span><span class="lbl">Final balance</span></div>
-        <div class="stat"><span class="num" id="contributed">—</span><span class="lbl">Total contributed</span></div>
-        <div class="stat"><span class="num" id="interest">—</span><span class="lbl">Interest earned</span></div>
+        <div class="stat"><span class="num" id="finalBal">-</span><span class="lbl">Final balance</span></div>
+        <div class="stat"><span class="num" id="contributed">-</span><span class="lbl">Total contributed</span></div>
+        <div class="stat"><span class="num" id="interest">-</span><span class="lbl">Interest earned</span></div>
       </div>
       <p class="status" id="assumption" style="color:var(--muted);">Interest compounds monthly; contributions are added at the end of each month.</p>
 
@@ -91,23 +91,23 @@
 
     <div class="content-section">
       <h2>Why compounding matters more than the amount</h2>
-      <p>With compound interest, you earn returns on your past returns. In the early years that's barely visible — the curve looks flat. But each year's interest joins the principal for every following year, so growth accelerates: in the table above, watch how the interest column eventually outgrows your own contributions. This is why starting ten years earlier routinely beats contributing twice as much later.</p>
+      <p>With compound interest, you earn returns on your past returns. In the early years that's barely visible: the curve looks flat. But each year's interest joins the principal for every following year, so growth accelerates: in the table above, watch how the interest column eventually outgrows your own contributions. This is why starting ten years earlier routinely beats contributing twice as much later.</p>
 
       <h2>FAQ</h2>
       <h3>What annual return should I assume?</h3>
-      <p>That's your call, not ours — but for reference, broad stock-market index funds have historically averaged about 7–10% per year over long periods before inflation (with brutal swings along the way), while high-yield savings accounts track central-bank rates. Use a conservative number for planning; nobody is guaranteed past averages.</p>
+      <p>That's your call, not ours, but for reference, broad stock-market index funds have historically averaged about 7–10% per year over long periods before inflation (with brutal swings along the way), while high-yield savings accounts track central-bank rates. Use a conservative number for planning; nobody is guaranteed past averages.</p>
       <h3>How does the math work?</h3>
-      <p>The balance grows by the monthly rate (annual ÷ 12) each month, then the contribution is added. The closed-form is FV = P(1+i)ⁿ + C·((1+i)ⁿ − 1)/i, where i is the monthly rate and n the number of months — this calculator simulates month-by-month, which matches that formula.</p>
+      <p>The balance grows by the monthly rate (annual ÷ 12) each month, then the contribution is added. The closed-form is FV = P(1+i)ⁿ + C·((1+i)ⁿ − 1)/i, where i is the monthly rate and n the number of months: this calculator simulates month-by-month, which matches that formula.</p>
       <h3>Does this account for inflation or taxes?</h3>
-      <p>No — results are nominal and pre-tax. A quick way to think in today's money: subtract expected inflation from your return assumption (e.g. use 4% instead of 7% with 3% inflation).</p>
+      <p>No, results are nominal and pre-tax. A quick way to think in today's money: subtract expected inflation from your return assumption (e.g. use 4% instead of 7% with 3% inflation).</p>
       <h3>Is my financial data sent anywhere?</h3>
       <p>No. The simulation runs entirely in your browser on a static page.</p>
 
       <h2>More tools</h2>
       <div class="related">
-        <a href="../loan-calculator/">🏦 Loan Calculator</a>
-        <a href="../salary-converter/">💰 Salary Converter</a>
-        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
+        <a href="../loan-calculator/">Loan Calculator</a>
+        <a href="../salary-converter/">Salary Converter</a>
+        <a href="../percentage-calculator/">Percentage Calculator</a>
       </div>
     </div>
 
@@ -116,7 +116,7 @@
 
 <footer class="site-footer">
   <div class="container">
-    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+    <p><a href="../">QuickTools</a>: free browser-based tools. <a href="../privacy.html">Privacy</a></p>
   </div>
 </footer>
 
@@ -138,7 +138,7 @@
     var body = document.getElementById('growthBody');
     if (isNaN(annual) || !(years > 0) || (P <= 0 && C <= 0)) {
       ['finalBal', 'contributed', 'interest'].forEach(function (id) {
-        document.getElementById(id).textContent = '—';
+        document.getElementById(id).textContent = '-';
       });
       body.innerHTML = '';
       return;

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Discount Calculator — Sale Price, Savings &amp; Tip Calculator</title>
-  <meta name="description" content="Calculate the final price after a discount, how much you save, plus a tip and bill-splitting calculator. Free, instant, in your browser — no sign-up.">
+  <title>Discount Calculator: Sale Price, Savings &amp; Tip Calculator</title>
+  <meta name="description" content="Calculate the final price after a discount, how much you save, plus a tip and bill-splitting calculator. Free, instant, in your browser, no sign-up.">
   <link rel="canonical" href="https://a-haz.github.io/test/discount-calculator/">
-  <meta property="og:title" content="Discount &amp; Tip Calculator — Sale Price and Savings">
+  <meta property="og:title" content="Discount &amp; Tip Calculator: Sale Price and Savings">
   <meta property="og:description" content="Final price after discount, amount saved, plus tip and bill splitting. Instant and private.">
   <meta property="og:url" content="https://a-haz.github.io/test/discount-calculator/">
   <meta property="og:type" content="website">
@@ -17,7 +17,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <a class="brand" href="../">Quick<span>Tools</span></a>
     <nav class="site-nav">
       <a href="../">All Tools</a>
       <a href="../privacy.html">Privacy</a>
@@ -46,8 +46,8 @@
         </div>
       </div>
       <div class="stat-grid">
-        <div class="stat"><span class="num" id="finalPrice">—</span><span class="lbl">You pay</span></div>
-        <div class="stat"><span class="num" id="saved" style="color:var(--green);">—</span><span class="lbl">You save</span></div>
+        <div class="stat"><span class="num" id="finalPrice">-</span><span class="lbl">You pay</span></div>
+        <div class="stat"><span class="num" id="saved" style="color:var(--green);">-</span><span class="lbl">You save</span></div>
       </div>
     </div>
 
@@ -68,9 +68,9 @@
         </div>
       </div>
       <div class="stat-grid">
-        <div class="stat"><span class="num" id="tipAmt">—</span><span class="lbl">Tip</span></div>
-        <div class="stat"><span class="num" id="totalBill">—</span><span class="lbl">Total</span></div>
-        <div class="stat"><span class="num" id="perPerson">—</span><span class="lbl">Per person</span></div>
+        <div class="stat"><span class="num" id="tipAmt">-</span><span class="lbl">Tip</span></div>
+        <div class="stat"><span class="num" id="totalBill">-</span><span class="lbl">Total</span></div>
+        <div class="stat"><span class="num" id="perPerson">-</span><span class="lbl">Per person</span></div>
       </div>
     </div>
 
@@ -79,17 +79,17 @@
       <h3>How is the sale price calculated?</h3>
       <p>Final price = original × (1 − discount/100). A 25% discount on $80 means you pay 75% of $80 = $60, saving $20.</p>
       <h3>How do "stacked" discounts work?</h3>
-      <p>Two successive discounts don't add — they multiply. 20% off then an extra 10% off is 0.8 × 0.9 = 0.72, i.e. 28% off in total, not 30%. Apply them one at a time using this calculator to see the real price.</p>
+      <p>Two successive discounts don't add: they multiply. 20% off then an extra 10% off is 0.8 × 0.9 = 0.72, i.e. 28% off in total, not 30%. Apply them one at a time using this calculator to see the real price.</p>
       <h3>What's a standard tip?</h3>
       <p>It varies by country and custom. In the US, 15–20% on the pre-tax total at sit-down restaurants is typical; many places elsewhere include service or expect little to no tip. Adjust the percentage to your situation.</p>
       <h3>Is anything sent to a server?</h3>
-      <p>No — it all runs in your browser on a static page.</p>
+      <p>No, it all runs in your browser on a static page.</p>
 
       <h2>More tools</h2>
       <div class="related">
-        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
-        <a href="../invoice-generator/">🧾 Invoice Generator</a>
-        <a href="../loan-calculator/">🏦 Loan Calculator</a>
+        <a href="../percentage-calculator/">Percentage Calculator</a>
+        <a href="../invoice-generator/">Invoice Generator</a>
+        <a href="../loan-calculator/">Loan Calculator</a>
       </div>
     </div>
 
@@ -98,7 +98,7 @@
 
 <footer class="site-footer">
   <div class="container">
-    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+    <p><a href="../">QuickTools</a>: free browser-based tools. <a href="../privacy.html">Privacy</a></p>
   </div>
 </footer>
 
@@ -110,8 +110,8 @@
     var p = parseFloat(document.getElementById('price').value);
     var d = parseFloat(document.getElementById('pct').value);
     if (isNaN(p) || isNaN(d)) {
-      document.getElementById('finalPrice').textContent = '—';
-      document.getElementById('saved').textContent = '—';
+      document.getElementById('finalPrice').textContent = '-';
+      document.getElementById('saved').textContent = '-';
       return;
     }
     var saved = p * d / 100;
@@ -124,7 +124,7 @@
     var t = parseFloat(document.getElementById('tip').value);
     var n = parseInt(document.getElementById('people').value, 10);
     if (isNaN(b) || isNaN(t) || !(n >= 1)) {
-      ['tipAmt', 'totalBill', 'perPerson'].forEach(function (id) { document.getElementById(id).textContent = '—'; });
+      ['tipAmt', 'totalBill', 'perPerson'].forEach(function (id) { document.getElementById(id).textContent = '-'; });
       return;
     }
     var tipAmt = b * t / 100;

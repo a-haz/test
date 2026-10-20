@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Unit Converter — Length, Weight, Temperature, Volume &amp; More</title>
-  <meta name="description" content="Free online unit converter for length, weight, temperature, volume, area, speed and data. Convert metric and imperial units instantly in your browser — no sign-up.">
+  <title>Unit Converter: Length, Weight, Temperature, Volume &amp; More</title>
+  <meta name="description" content="Free online unit converter for length, weight, temperature, volume, area, speed and data. Convert metric and imperial units instantly in your browser, no sign-up.">
   <link rel="canonical" href="https://a-haz.github.io/test/unit-converter/">
-  <meta property="og:title" content="Unit Converter — Metric &amp; Imperial">
+  <meta property="og:title" content="Unit Converter: Metric &amp; Imperial">
   <meta property="og:description" content="Convert length, weight, temperature, volume, area, speed and data instantly in your browser.">
   <meta property="og:url" content="https://a-haz.github.io/test/unit-converter/">
   <meta property="og:type" content="website">
@@ -26,7 +26,7 @@
 
 <header class="site-header">
   <div class="container">
-    <a class="brand" href="../">⚡ Quick<span>Tools</span></a>
+    <a class="brand" href="../">Quick<span>Tools</span></a>
     <nav class="site-nav">
       <a href="../">All Tools</a>
       <a href="../privacy.html">Privacy</a>
@@ -57,7 +57,7 @@
           <select id="toUnit" style="margin-top:8px;"></select>
         </div>
       </div>
-      <p class="result-box" id="formula" style="margin-top:18px;">—</p>
+      <p class="result-box" id="formula" style="margin-top:18px;">-</p>
     </div>
 
     <div class="content-section">
@@ -67,13 +67,13 @@
       <h3>What's the difference between US and imperial gallons?</h3>
       <p>They're different: a US gallon is about 3.785 litres while an imperial (UK) gallon is about 4.546 litres. This tool's "gallon" is the US gallon, which is the more common default online; convert via litres if you need the imperial one.</p>
       <h3>Is anything sent to a server?</h3>
-      <p>No — all conversion happens in your browser on a static page.</p>
+      <p>No, all conversion happens in your browser on a static page.</p>
 
       <h2>More tools</h2>
       <div class="related">
-        <a href="../percentage-calculator/">📊 Percentage Calculator</a>
-        <a href="../bmi-calculator/">⚖️ BMI Calculator</a>
-        <a href="../timestamp-converter/">⏱ Timestamp Converter</a>
+        <a href="../percentage-calculator/">Percentage Calculator</a>
+        <a href="../bmi-calculator/">BMI Calculator</a>
+        <a href="../timestamp-converter/">Timestamp Converter</a>
       </div>
     </div>
 
@@ -82,7 +82,7 @@
 
 <footer class="site-footer">
   <div class="container">
-    <p>⚡ <a href="../">QuickTools</a> — free browser-based tools. <a href="../privacy.html">Privacy</a></p>
+    <p><a href="../">QuickTools</a>: free browser-based tools. <a href="../privacy.html">Privacy</a></p>
   </div>
 </footer>
 
@@ -165,7 +165,7 @@
 
   function updateFormula() {
     var v = parseFloat(fromVal.value);
-    if (isNaN(v)) { document.getElementById('formula').textContent = '—'; return; }
+    if (isNaN(v)) { document.getElementById('formula').textContent = '-'; return; }
     document.getElementById('formula').innerHTML =
       '<strong>' + fmt(v) + '</strong> ' + fromUnit.value + ' = <strong>' + (toVal.value || '0') + '</strong> ' + toUnit.value;
   }
