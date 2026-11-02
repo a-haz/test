@@ -91,6 +91,14 @@
 
   function daysInMonth(year, month) { return new Date(year, month + 1, 0).getDate(); }
 
+  // a calendar date as a whole day count, so a daylight-saving hour cannot shift
+  // a difference between two dates by a day
+  function dayNumber(d) {
+    var u = new Date(0);
+    u.setUTCFullYear(d.getFullYear(), d.getMonth(), d.getDate());
+    return Math.round(u.getTime() / 86400000);
+  }
+
   function update() {
     if (!dob.value) {
       document.getElementById('mainAge').textContent = 'Pick a date of birth above.';
@@ -128,17 +136,18 @@
       '<strong>' + years + '</strong> years, <strong>' + months + '</strong> months, <strong>' + days + '</strong> days';
 
     var msDiff = now - birth;
-    var totalDays = Math.floor(msDiff / 86400000);
+    var totalDays = dayNumber(now) - dayNumber(birth);
     var totalMonths = years * 12 + months;
     document.getElementById('totalMonths').textContent = totalMonths.toLocaleString();
     document.getElementById('totalWeeks').textContent = Math.floor(totalDays / 7).toLocaleString();
     document.getElementById('totalDays').textContent = totalDays.toLocaleString();
     document.getElementById('totalHours').textContent = Math.floor(msDiff / 3600000).toLocaleString();
 
-    // next birthday
+    // next birthday: today counts. Built from the birth month and day each year, so a
+    // 29 February birthday is 1 March in other years and 29 February in leap years
     var next = new Date(now.getFullYear(), birth.getMonth(), birth.getDate());
-    if (next < now || next.getTime() === now.getTime()) next.setFullYear(now.getFullYear() + 1);
-    var daysToNext = Math.ceil((next - now) / 86400000);
+    if (dayNumber(next) < dayNumber(now)) next = new Date(now.getFullYear() + 1, birth.getMonth(), birth.getDate());
+    var daysToNext = dayNumber(next) - dayNumber(now);
     if (daysToNext === 0) {
       document.getElementById('nextBday').textContent = 'Happy birthday! That date is today.';
     } else {
