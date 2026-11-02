@@ -137,9 +137,12 @@
   function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 
   function run() {
-    var a = document.getElementById('left').value.split('\n');
-    var b = document.getElementById('right').value.split('\n');
-    var result = diff(a, b);
+    var left = document.getElementById('left').value;
+    var right = document.getElementById('right').value;
+    var a = left.split('\n');
+    var b = right.split('\n');
+    // two empty boxes would still diff as one blank line each: show the empty state instead
+    var result = left || right ? diff(a, b) : [];
     var added = 0, removed = 0;
     var html = result.map(function (r) {
       var cls = r.t === 'add' ? 'add' : r.t === 'del' ? 'del' : '';
@@ -150,7 +153,10 @@
     }).join('');
     document.getElementById('output').innerHTML = html || '<div class="ln"><span class="txt" style="padding:8px; color:var(--muted)">Nothing to compare yet.</span></div>';
     var sum = document.getElementById('summary');
-    if (added === 0 && removed === 0 && (a.join('') || b.join(''))) {
+    if (!result.length) {
+      sum.className = 'status';
+      sum.textContent = '';
+    } else if (added === 0 && removed === 0 && (a.join('') || b.join(''))) {
       sum.className = 'status ok';
       sum.textContent = '✓ The two texts are identical.';
     } else {
