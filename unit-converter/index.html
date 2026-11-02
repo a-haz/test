@@ -48,13 +48,13 @@
         <div class="field">
           <label for="fromVal">From</label>
           <input type="number" id="fromVal" value="1" step="any">
-          <select id="fromUnit" style="margin-top:8px;"></select>
+          <select id="fromUnit" aria-label="From unit" style="margin-top:8px;"></select>
         </div>
-        <button class="btn btn-secondary swap" id="swapBtn" title="Swap units">⇄</button>
+        <button class="btn btn-secondary swap" id="swapBtn" title="Swap units" aria-label="Swap units">⇄</button>
         <div class="field">
           <label for="toVal">To</label>
           <input type="number" id="toVal" step="any">
-          <select id="toUnit" style="margin-top:8px;"></select>
+          <select id="toUnit" aria-label="To unit" style="margin-top:8px;"></select>
         </div>
       </div>
       <p class="result-box" id="formula" style="margin-top:18px;">-</p>
