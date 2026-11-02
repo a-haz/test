@@ -52,7 +52,7 @@
     <!-- AdSense: paste a responsive ad unit here once approved -->
 
     <div class="tool-panel">
-      <div class="dropzone" id="dropzone">
+      <div class="dropzone" id="dropzone" role="button" tabindex="0">
         <p><strong>Click to choose an image</strong> or drag &amp; drop it here</p>
         <p style="font-size:0.85rem;">JPG, PNG, WebP, GIF, processed locally, never uploaded</p>
       </div>
@@ -221,6 +221,9 @@
   }
 
   dropzone.addEventListener('click', function () { fileInput.click(); });
+  dropzone.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+  });
   fileInput.addEventListener('change', function () { loadFile(this.files[0]); });
 
   ['dragover', 'dragenter'].forEach(function (ev) {

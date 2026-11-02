@@ -46,7 +46,7 @@
     <div class="tool-panel">
       <textarea class="io" id="input" spellcheck="false" style="min-height:120px;" placeholder="Type or paste text to hash…"></textarea>
       <div class="controls">
-        <label class="btn btn-secondary" style="cursor:pointer;">
+        <label class="btn btn-secondary" id="fileBtn" role="button" tabindex="0" style="cursor:pointer;">
           Hash a file instead<input type="file" id="fileInput" style="display:none;">
         </label>
         <span class="status" id="fileStatus" style="color:var(--muted);"></span>
@@ -135,6 +135,11 @@
     document.getElementById('fileStatus').textContent = '';
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(recompute, 120);
+  });
+
+  // the real file input is hidden, so the label stands in for it on the keyboard
+  document.getElementById('fileBtn').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); document.getElementById('fileInput').click(); }
   });
 
   document.getElementById('fileInput').addEventListener('change', function () {
