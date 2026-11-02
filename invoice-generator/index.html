@@ -257,10 +257,12 @@
     } catch (e) { /* storage unavailable (private mode): ignore */ }
   });
 
-  // Defaults
+  // Defaults: today and 14 days on, as local calendar dates (toISOString would give
+  // the UTC date, a day off for part of every day outside UTC)
   var today = new Date();
-  var due = new Date(today.getTime() + 14 * 86400000);
-  function iso(d) { return d.toISOString().slice(0, 10); }
+  var due = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 14);
+  function pad(n, w) { return String(n).padStart(w, '0'); }
+  function iso(d) { return pad(d.getFullYear(), 4) + '-' + pad(d.getMonth() + 1, 2) + '-' + pad(d.getDate(), 2); }
   document.getElementById('invDate').value = iso(today);
   document.getElementById('invDue').value = iso(due);
 
