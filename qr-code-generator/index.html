@@ -114,14 +114,22 @@
   var input = document.getElementById('input');
   var img = document.getElementById('qrImg');
   var debounceTimer = null;
+  var run = 0;
+
+  // no code on show means nothing to download either
+  function clear() {
+    img.removeAttribute('src');
+    document.getElementById('downloadBtn').removeAttribute('href');
+    document.getElementById('meta').textContent = '';
+  }
 
   function generate() {
     var text = input.value;
     var err = document.getElementById('error');
+    var mine = ++run;
     err.textContent = '';
     if (!text) {
-      img.removeAttribute('src');
-      document.getElementById('meta').textContent = '';
+      clear();
       return;
     }
     try {
@@ -134,6 +142,7 @@
       // convert GIF data URL to PNG via canvas for a more universal download
       var tmp = new Image();
       tmp.onload = function () {
+        if (mine !== run) return; // the text has changed since
         var canvas = document.createElement('canvas');
         canvas.width = tmp.width;
         canvas.height = tmp.height;
@@ -147,6 +156,7 @@
       };
       tmp.src = dataUrl;
     } catch (e) {
+      clear();
       err.textContent = '✗ Content too long for a QR code at this error-correction level. Shorten it or lower the level.';
     }
   }
