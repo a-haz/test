@@ -129,6 +129,7 @@
   var origFile = null;
   var currentUrl = null;
   var debounceTimer = null;
+  var loads = 0, jobs = 0;    // only the latest file and the latest settings may show
 
   function setError(msg) { document.getElementById('error').textContent = msg || ''; }
 
@@ -144,8 +145,10 @@
       return;
     }
     setError('');
-    origFile = file;
+    var load = ++loads;
     var done = function (img, w, h) {
+      if (load !== loads) return; // another file was picked while this one decoded
+      origFile = file;
       bitmap = img; srcW = w; srcH = h;
       document.getElementById('controls').style.display = 'block';
       document.getElementById('origInfo').textContent = fmtBytes(file.size) + ' · ' + w + '×' + h;
@@ -191,7 +194,10 @@
     ctx.imageSmoothingQuality = 'high';
     ctx.drawImage(bitmap, 0, 0, w, h);
 
+    var job = ++jobs;
     canvas.toBlob(function (blob) {
+      // a slow encode (a big PNG) can finish after a later, faster one: drop it
+      if (job !== jobs) return;
       if (!blob) { setError('Compression failed for this image/format combination.'); return; }
       if (currentUrl) URL.revokeObjectURL(currentUrl);
       currentUrl = URL.createObjectURL(blob);
