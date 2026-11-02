@@ -190,13 +190,14 @@
 
   function buildTabs() {
     document.getElementById('catTabs').innerHTML = Object.keys(CATS).map(function (c) {
-      return '<button data-cat="' + c + '"' + (c === current ? ' class="active"' : '') + '>' + c + '</button>';
+      return '<button data-cat="' + c + '"' + (c === current ? ' class="active"' : '') + ' aria-pressed="' + (c === current) + '">' + c + '</button>';
     }).join('');
     document.querySelectorAll('#catTabs button').forEach(function (b) {
       b.addEventListener('click', function () {
         current = b.getAttribute('data-cat');
-        document.querySelectorAll('#catTabs button').forEach(function (x) { x.className = ''; });
+        document.querySelectorAll('#catTabs button').forEach(function (x) { x.className = ''; x.setAttribute('aria-pressed', 'false'); });
         b.className = 'active';
+        b.setAttribute('aria-pressed', 'true');
         fillUnits();
       });
     });

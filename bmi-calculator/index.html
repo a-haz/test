@@ -44,8 +44,8 @@
     <div class="tool-panel">
       <div class="controls">
         <div class="unit-toggle">
-          <button id="metricBtn" class="active">Metric</button>
-          <button id="imperialBtn">Imperial</button>
+          <button id="metricBtn" class="active" aria-pressed="true">Metric</button>
+          <button id="imperialBtn" aria-pressed="false">Imperial</button>
         </div>
       </div>
 
@@ -128,6 +128,8 @@
     metric = m;
     document.getElementById('metricBtn').className = m ? 'active' : '';
     document.getElementById('imperialBtn').className = m ? '' : 'active';
+    document.getElementById('metricBtn').setAttribute('aria-pressed', String(m));
+    document.getElementById('imperialBtn').setAttribute('aria-pressed', String(!m));
     document.getElementById('metricFields').style.display = m ? 'flex' : 'none';
     document.getElementById('imperialFields').style.display = m ? 'none' : 'flex';
     update();
