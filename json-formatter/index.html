@@ -104,7 +104,7 @@
     } catch (e) {
       var msg = e.message;
       var m = msg.match(/position (\d+)/);
-      if (m) {
+      if (m && !/line \d+/.test(msg)) { // newer browsers already name the line and column
         var lc = lineCol(text, parseInt(m[1], 10));
         msg += ' (line ' + lc.line + ', column ' + lc.col + ')';
       }
