@@ -130,14 +130,15 @@
     var annual = parseFloat(els[1].value);
     var years = parseFloat(els[2].value);
     var cur = els[3].value;
-    if (!(P > 0) || !(years > 0) || isNaN(annual) || annual < 0) {
+    var n = Math.round(years * 12);
+    // a term that rounds to zero months has no payments to spread the loan over
+    if (!(P > 0) || !(n >= 1) || isNaN(annual) || annual < 0) {
       ['monthly', 'totalPaid', 'totalInterest'].forEach(function (id) {
         document.getElementById(id).textContent = '-';
       });
       document.getElementById('amortBody').innerHTML = '';
       return;
     }
-    var n = Math.round(years * 12);
     var r = annual / 100 / 12;
     var M = r === 0 ? P / n : P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
 
