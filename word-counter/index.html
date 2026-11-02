@@ -86,10 +86,9 @@
   var input = document.getElementById('input');
 
   function fmtTime(seconds) {
-    if (seconds < 60) return Math.round(seconds) + 's';
-    var m = Math.floor(seconds / 60);
-    var s = Math.round(seconds % 60);
-    return m + 'm ' + s + 's';
+    seconds = Math.round(seconds); // round first, so 119.7s is 2m 0s, not 1m 60s
+    if (seconds < 60) return seconds + 's';
+    return Math.floor(seconds / 60) + 'm ' + (seconds % 60) + 's';
   }
 
   function update() {
