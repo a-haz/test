@@ -111,9 +111,11 @@
     upper: function (t) { return t.toUpperCase(); },
     lower: function (t) { return t.toLowerCase(); },
     title: function (t) {
+      // first and last word by position, ignoring leading and trailing whitespace
+      var start = t.search(/\S/), end = t.replace(/\s+$/, '').length;
       return t.toLowerCase().replace(/\S+/g, function (w, pos) {
-        var isFirst = pos === 0;
-        var isLast = pos + w.length >= t.trim().length;
+        var isFirst = pos === start;
+        var isLast = pos + w.length >= end;
         var bare = w.replace(/[^a-z0-9']/g, '');
         if (!isFirst && !isLast && SMALL[bare]) return w;
         return w.charAt(0).toUpperCase() + w.slice(1);
