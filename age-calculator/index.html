@@ -99,20 +99,24 @@
     return Math.round(u.getTime() / 86400000);
   }
 
+  function clearStats(message) {
+    document.getElementById('mainAge').textContent = message;
+    ['totalMonths', 'totalWeeks', 'totalDays', 'totalHours'].forEach(function (id) {
+      document.getElementById(id).textContent = '-';
+    });
+    document.getElementById('nextBday').textContent = '';
+  }
+
   function update() {
     if (!dob.value) {
-      document.getElementById('mainAge').textContent = 'Pick a date of birth above.';
-      ['totalMonths', 'totalWeeks', 'totalDays', 'totalHours'].forEach(function (id) {
-        document.getElementById(id).textContent = '-';
-      });
-      document.getElementById('nextBday').textContent = '';
+      clearStats('Pick a date of birth above.');
       return;
     }
     var birth = new Date(dob.value + 'T00:00:00');
     var now = asof.value ? new Date(asof.value + 'T00:00:00') : new Date();
 
     if (birth > now) {
-      document.getElementById('mainAge').textContent = 'That date is in the future.';
+      clearStats('That date is in the future.');
       return;
     }
 
