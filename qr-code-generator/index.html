@@ -107,6 +107,10 @@
 <script src="qrcode.js"></script>
 <script>
 (function () {
+  // the library's default keeps only the low byte of each character, which garbles
+  // anything outside Latin-1 (Japanese, emoji, ...). Encode the text as UTF-8.
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];
+
   var input = document.getElementById('input');
   var img = document.getElementById('qrImg');
   var debounceTimer = null;
