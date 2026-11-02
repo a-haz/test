@@ -112,11 +112,13 @@
     var months = now.getMonth() - birth.getMonth();
     var days = now.getDate() - birth.getDate();
 
-    if (days < 0) {
+    // borrow the days of the month before the "now" month. A birth day of 29-31 can
+    // need a second borrow when that month is shorter (Jan 31 to Mar 1)
+    var prevMonth = now.getMonth();
+    var prevYear = now.getFullYear();
+    while (days < 0) {
       months--;
-      // days in the month before the "now" month
-      var prevMonth = now.getMonth() - 1;
-      var prevYear = now.getFullYear();
+      prevMonth--;
       if (prevMonth < 0) { prevMonth = 11; prevYear--; }
       days += daysInMonth(prevYear, prevMonth);
     }
