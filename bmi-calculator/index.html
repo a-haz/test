@@ -169,8 +169,10 @@
     }
 
     var bmi = kg / (meters * meters);
-    var cat = category(bmi);
-    valEl.textContent = bmi.toFixed(1);
+    var shown = bmi.toFixed(1);
+    // classify the value on screen, so 24.96 (shown as 25.0) is not called normal
+    var cat = category(parseFloat(shown));
+    valEl.textContent = shown;
     valEl.style.color = cat[1];
     catEl.innerHTML = 'Category: <strong style="color:' + cat[1] + '">' + cat[0] + '</strong> (WHO classification)';
 
