@@ -145,6 +145,13 @@
     return parseFloat(n.toPrecision(10)).toLocaleString(undefined, { maximumFractionDigits: 8 });
   }
 
+  // the same rounding as fmt, written so an <input type="number"> accepts it:
+  // no digit grouping and "." as the decimal point, whatever the user's locale
+  function plain(n) {
+    if (!isFinite(n)) return '';
+    return parseFloat(n.toPrecision(10)).toLocaleString('en-US', { maximumFractionDigits: 8, useGrouping: false });
+  }
+
   function convert(forward) {
     var cat = CATS[current];
     var src = forward ? fromVal : toVal;
@@ -159,15 +166,16 @@
     } else {
       result = v * cat.units[srcUnit] / cat.units[dstUnit];
     }
-    dst.value = fmt(result);
+    dst.value = plain(result);
     updateFormula();
   }
 
   function updateFormula() {
     var v = parseFloat(fromVal.value);
     if (isNaN(v)) { document.getElementById('formula').textContent = '-'; return; }
+    var t = parseFloat(toVal.value);
     document.getElementById('formula').innerHTML =
-      '<strong>' + fmt(v) + '</strong> ' + fromUnit.value + ' = <strong>' + (toVal.value || '0') + '</strong> ' + toUnit.value;
+      '<strong>' + fmt(v) + '</strong> ' + fromUnit.value + ' = <strong>' + (isNaN(t) ? '0' : fmt(t)) + '</strong> ' + toUnit.value;
   }
 
   function fillUnits() {
