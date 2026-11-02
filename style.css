@@ -95,7 +95,6 @@ h1 { font-size: 1.9rem; margin: 0 0 6px; line-height: 1.25; }
 
 .card h2 { font-size: 1.1rem; margin: 0 0 6px; }
 .card p { color: var(--muted); margin: 0; font-size: 0.92rem; }
-.card .emoji { font-size: 1.5rem; display: block; margin-bottom: 10px; }
 
 /* Tool panel */
 .tool-panel {
